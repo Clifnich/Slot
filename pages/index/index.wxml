@@ -11,16 +11,14 @@
   <view class="th">Fri</view>
   <view class="th">Sat</view>
 </view>
-<view class="row">
-  <view class="th2">7 a.m.</view>
-  <block wx:for="{{[1,2,3,4,5,6,7]}}">
-    <view class="td">hi</view>
-   </block>
-</view>
 
-<block wx:for="{{[8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]}}" wx:for-item="i" wx:key="">
+<block wx:for="{{[7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]}}" 
+  wx:for-item="i" wx:key="">
   <view class="row">
-   <view class="th2">{{i}}</view>
+    <view class="th2">
+      <view wx:if="{{i === 7}}">7 p.m.</view>
+      <view wx:else>{{i}}</view>
+    </view>
    <block wx:for="{{[1,2,3,4,5,6,7]}}">
     <view class="td">hi</view>
    </block>

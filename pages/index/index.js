@@ -23,5 +23,8 @@ Page({
         userInfo:userInfo
       })
     })
+  },
+  tapColor: function(e) {
+    console.log(e);
   }
 })
