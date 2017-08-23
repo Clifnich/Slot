@@ -19,8 +19,11 @@
       <view wx:if="{{i === 7}}">7 p.m.</view>
       <view wx:else>{{i}}</view>
     </view>
-   <block wx:for="{{[1,2,3,4,5,6,7]}}">
-    <view class="td">hi</view>
+   <block wx:for="{{[1,2,3,4,5,6,7]}}" wx:key="">
+    <view class="td">
+      <view wx:if="{{array[0][item - 1].color === 'green'}}">green</view>
+      <view wx:else>hi</view>
+    </view>
    </block>
   </view>
 </block>

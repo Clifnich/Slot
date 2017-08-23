@@ -5,7 +5,42 @@ Page({
   data: {
     motto: 'Hello World',
     userInfo: {},
-    array: []
+    array: [
+      [{ color: 'green' }, { color: 'green' }, { color: 'green' }, 
+        { color: 'green' }, { color: 'green' }, { color: 'green' }, { color: 'green' }],
+      [{ color: 'green' }, { color: 'green' }, { color: 'green' },
+      { color: 'green' }, { color: 'green' }, { color: 'green' }, { color: 'green' }],
+      [{ color: 'green' }, { color: 'green' }, { color: 'green' },
+      { color: 'green' }, { color: 'green' }, { color: 'green' }, { color: 'green' }],
+      [{ color: 'green' }, { color: 'green' }, { color: 'green' },
+      { color: 'green' }, { color: 'green' }, { color: 'green' }, { color: 'green' }],
+      [{ color: 'green' }, { color: 'green' }, { color: 'green' },
+      { color: 'green' }, { color: 'green' }, { color: 'green' }, { color: 'green' }],
+      [{ color: 'green' }, { color: 'green' }, { color: 'green' },
+      { color: 'green' }, { color: 'green' }, { color: 'green' }, { color: 'green' }],
+      [{ color: 'green' }, { color: 'green' }, { color: 'green' },
+      { color: 'green' }, { color: 'green' }, { color: 'green' }, { color: 'green' }],
+      [{ color: 'green' }, { color: 'green' }, { color: 'green' },
+      { color: 'green' }, { color: 'green' }, { color: 'green' }, { color: 'green' }],
+      [{ color: 'green' }, { color: 'green' }, { color: 'green' },
+      { color: 'green' }, { color: 'green' }, { color: 'green' }, { color: 'green' }],
+      [{ color: 'green' }, { color: 'green' }, { color: 'green' },
+      { color: 'green' }, { color: 'green' }, { color: 'green' }, { color: 'green' }],
+      [{ color: 'green' }, { color: 'green' }, { color: 'green' },
+      { color: 'green' }, { color: 'green' }, { color: 'green' }, { color: 'green' }],
+      [{ color: 'green' }, { color: 'green' }, { color: 'green' },
+      { color: 'green' }, { color: 'green' }, { color: 'green' }, { color: 'green' }],
+      [{ color: 'green' }, { color: 'green' }, { color: 'green' },
+      { color: 'green' }, { color: 'green' }, { color: 'green' }, { color: 'green' }],
+      [{ color: 'green' }, { color: 'green' }, { color: 'green' },
+      { color: 'green' }, { color: 'green' }, { color: 'green' }, { color: 'green' }],
+      [{ color: 'green' }, { color: 'green' }, { color: 'green' },
+      { color: 'green' }, { color: 'green' }, { color: 'green' }, { color: 'green' }],
+      [{ color: 'green' }, { color: 'green' }, { color: 'green' },
+      { color: 'green' }, { color: 'green' }, { color: 'green' }, { color: 'green' }],
+      [{ color: 'green' }, { color: 'green' }, { color: 'green' },
+      { color: 'green' }, { color: 'green' }, { color: 'green' }, { color: 'green' }]
+    ]
   },
   //事件处理函数
   bindViewTap: function() {
