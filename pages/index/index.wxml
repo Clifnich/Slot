@@ -3,30 +3,44 @@
 <view class="table">
 <view class="row">
   <view class="th"></view>
-  <view class="th">Sun</view>
-  <view class="th">Mon</view>
-  <view class="th">Tue</view>
-  <view class="th">Wed</view>
-  <view class="th">Thu</view>
-  <view class="th">Fri</view>
-  <view class="th">Sat</view>
+  <block wx:for="{{weekdays}}" wx:key="">
+    <view class="th">{{item}}</view>
+  </block>
 </view>
 
-<block wx:for="{{[7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]}}" 
+<view class="row">
+  <view class="th2">7 a.m.</view>
+  <block wx:for="{{array7}}" wx:key="">
+    <block wx:if="{{item.color === 'green'}}">
+      <view class="td green" id="{{item.id}}"  
+        bindtouchmove="array7DragToColor" bindtap="array7Tap"></view>
+    </block>
+    <block wx:else>
+      <view class="td" id="{{item.id}}"  
+        bindtouchmove="array7DragToColor" bindtap="array7Tap">hi</view>
+    </block>
+  </block>
+</view>
+
+<block wx:for="{{[ 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]}}" 
   wx:for-item="i" wx:key="">
-  <view class="row">
+  <view class="row" bindtap="tapColor">
     <block wx:for="{{[0,1,2,3,4,5,6,7]}}" wx:for-item="j" wx:key="">
       <block wx:if="{{j === 0}}">
         <view class="th2">
-          <view wx:if="{{i === 7}}">7 p.m.</view>
+          <view wx:if="{{i === 7}}">7 a.m.</view>
           <view wx:else>{{i}}</view>
         </view>
       </block>
       <block wx:else>
-        <view class="td">
-          <view wx:if="{{array[i-7][j-1].color === 'green'}}">green</view>
-          <view wx:else>hi</view>
-        </view>
+        
+          <block wx:if="{{array[i-7][j-1].color === 'green'}}">
+            <view class="td green"></view>
+          </block>
+          <block wx:else>
+            <view class="td">hi</view>
+          </block>
+        
       </block>
     </block>
   </view>
