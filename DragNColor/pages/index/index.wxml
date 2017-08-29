@@ -1,0 +1,18 @@
+<view class="row">
+  <block wx:for="{{array1}}" wx:key="">
+    <view class="column {{item.changeColor ? 'selected' : 'normal'}}"
+      bindtouchmove="handletouch"
+      bindtouchstart="handletouchstart">
+      Column #{{item.id}}
+    </view>
+  </block>
+</view>
+<view class="row">
+  <block wx:for="{{array2}}" wx:key="">
+    <view class="column {{item.changeColor ? 'selected' : 'normal'}}"
+      bindtouchmove="handletouch"
+      bindtouchstart="handletouchstart">
+      Column #{{item.id}}
+    </view>
+  </block>
+</view>
