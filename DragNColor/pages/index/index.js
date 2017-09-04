@@ -10,7 +10,21 @@ Page( {
     ],
     array2: [
       {id: '5', changeColor: false},
-      {id: '6', changeColor: false}
+      {id: '6', changeColor: false},
+      {id: '7', changeColor: false},
+      {id: '8', changeColor: false}
+    ],
+    array3: [
+      { id: '9', changeColor: false },
+      { id: '10', changeColor: false },
+      { id: '11', changeColor: false },
+      { id: '12', changeColor: false }
+    ],
+    array4: [
+      { id: '13', changeColor: false },
+      { id: '14', changeColor: false },
+      { id: '15', changeColor: false },
+      { id: '16', changeColor: false }
     ],
     startWhite: true,
     windowWidth: 0,
@@ -33,6 +47,7 @@ Page( {
     console.log("Set windowHeight to be: " + this.data.windowHeight);
   },
 
+  // this function listens to user's finger movement
   handletouch: function(e) {
     var touch = e.touches[0];
     var x = touch.pageX, y = touch.pageY;
@@ -42,25 +57,34 @@ Page( {
     // we are touching block #1, change it to green background
     var windowWidth = this.data.windowWidth, windowHeight = this.data.windowHeight;
     var newArray1 = this.data.array1,
-      newArray2 = this.data.array2;
-    var halfWidth = windowWidth / 2, halfHeight = windowHeight / 2;
-    var quarterWidth = halfWidth / 2, quarterHeight = halfHeight / 2;
+      newArray2 = this.data.array2,
+      newArray3 = this.data.array3,
+      newArray4 = this.data.array4;
+    var halfWidth = windowWidth / 2, quarterHeight = windowHeight / 4;
+    var quarterWidth = halfWidth / 2;
 
     var colIndex = this.getColumnIndex(x);
     console.log('colIndex is: ' + colIndex);
     var changeColor = this.data.startWhite;
-    if (y < halfHeight) {
+    if (y < quarterHeight) {
       console.log("column #" + colIndex + " should change color!");
       newArray1[colIndex - 1].changeColor = changeColor;
-    } else if (x < halfWidth && y > halfHeight) {
-      newArray2[0].changeColor = changeColor;
-    } else if (x > halfWidth && y > halfHeight) {
-      newArray2[1].changeColor = changeColor;
+    } else if (y < quarterHeight * 2) {
+      console.log("column #" + (colIndex + 4) + " should change color!");
+      newArray2[colIndex - 1].changeColor = changeColor;
+    } else if (y < quarterHeight * 3) {
+      console.log("column #" + (colIndex + 8) + " should change color!");
+      newArray3[colIndex - 1].changeColor = changeColor;
+    } else {
+      console.log("column #" + (colIndex + 12) + " should change color!");
+      newArray4[colIndex - 1].changeColor = changeColor;
     }
 
     this.setData({
       array1: newArray1,
-      array2: newArray2
+      array2: newArray2,
+      array3: newArray3,
+      array4: newArray4
     });
   },
 
@@ -71,20 +95,22 @@ Page( {
     var windowWidth = this.data.windowWidth, 
       windowHeight = this.data.windowHeight;
 
-    var halfWidth = windowWidth / 2, halfHeight = windowHeight / 2;
-    var quarterWidth = halfWidth / 2, quarterHeight = halfHeight / 2;
+    var halfWidth = windowWidth / 2, quarterHeight = windowHeight / 4;
+    var quarterWidth = halfWidth / 2;
 
     var colIndex = this.getColumnIndex(x);
     console.log('colIndex is: ' + colIndex);
 
     // change the startWhite attribute
     var changeColor = this.data.startWhite;
-    if (y < halfHeight) {
+    if (y < quarterHeight) {
       this.setData({ startWhite: !this.data.array1[colIndex-1].changeColor});
-    } else if (x < halfWidth && y > halfHeight) {
-      this.setData({ startWhite: !this.data.array2[0].changeColor });
-    } else if (x > halfWidth && y > halfHeight) {
-      this.setData({ startWhite: !this.data.array2[1].changeColor });
+    } else if (y < quarterHeight * 2){
+      this.setData({ startWhite: !this.data.array2[colIndex-1].changeColor});
+    } else if (y < quarterHeight * 3){
+      this.setData({ startWhite: !this.data.array3[colIndex - 1].changeColor });
+    } else {
+      this.setData({ startWhite: !this.data.array4[colIndex - 1].changeColor });
     }
   },
   // This function returns the column index of a given position x

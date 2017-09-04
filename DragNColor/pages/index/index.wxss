@@ -8,12 +8,12 @@
   display: flex;
   flex-direction: row;
   width: 100%;
-  height: 49.7vh;
+  height: 24.8vh;
 }
 
 .column {
   width: 50%;
-  height: 50vh;
+  height: 100%;
   border: 1px solid black;
   background-color: green;
 }
