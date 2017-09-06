@@ -26,4 +26,6 @@
   </block>
 </view>
 <!-- TODO Try to make a canvas here and test the preventing scrolling technique. -->
-<canvas canvas-id="1" />
+<canvas disable-scroll="true" bindtouchstart="dummyStart"
+ bindtouchmove="dummyMove" bindtouchend="dummyEnd" 
+ canvas-id="1" class="canvas"/>

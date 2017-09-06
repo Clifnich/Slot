@@ -117,5 +117,14 @@ Page( {
   // Please -1 to get the actual array index
   getColumnIndex: function(x) {
     return (x / (this.data.windowWidth / 4) + 0.5).toFixed(0);
+  },
+  dummyStart: function(e) {
+    console.log('start' + e);
+  },
+  dummyMove: function(e) {
+    console.log('move' + e);
+  },
+  dummyEnd: function(e) {
+    console.log('end' + e);
   }
 })
