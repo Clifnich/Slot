@@ -30,7 +30,13 @@ Page( {
     windowWidth: 0,
     windowHeight: 0,
     canvasWidth: 0,
-    canvasHeight: 0
+    canvasHeight: 0,
+    recWidth: 0,
+    recHeight: 0,
+    canvasBlocks: [0,0,0,0,
+                    0,0,0,0,
+                    0,0,0,0, 
+                    0,0,0,0]
   },
 
   onLoad: function() {
@@ -62,35 +68,15 @@ Page( {
       for (var j = 0; j < 4; j++) {
         context.rect(recWidth * i, recHeight * j, recWidth, recHeight);
         context.stroke();
+        // context.setFillStyle('green');
+        // context.fillRect(recWidth * i, recHeight * j, recWidth, recHeight);
       }
     }
     context.draw();
-    // context.rect(0, 0, recWidth, recHeight);
-    // context.stroke();
-    // context.rect(recWidth, 0, recWidth, recHeight);
-    // context.stroke();
-    // context.rect(recWidth * 2, 0, recWidth, recHeight);
-    // context.stroke();
-    // context.rect(recWidth * 3, 0, recWidth, recHeight);
-    // context.stroke();
-    // context.rect(0, 75, recWidth, recHeight);
-    // context.stroke();
-    // context.rect(150, 75, recWidth, recHeight);
-    // context.stroke();
-    // context.draw();
-    // var context = wx.createCanvasContext('1');
-    // context.strokeRect(0, 500, 10, 10);
-    // context.draw();
-    // context.stroke();
-    // context.rect(156, 445, 312, middleHeight);
-    // context.stroke();
-    // context.rect(0, middleHeight, 156, windowHeight);
-    // context.stroke();
-    // context.rect(156, middleHeight, 312, windowHeight);
-    // wx.drawCanvas({
-    //   canvasId: 1,
-    //   actions: context.getActions()
-    // });
+    this.setData({
+      recWidth: recWidth,
+      recHeight: recHeight,
+    });
   },
 
   // this function listens to user's finger movement
@@ -159,13 +145,37 @@ Page( {
       this.setData({ startWhite: !this.data.array4[colIndex - 1].changeColor });
     }
   },
-  // This function returns the column index of a given position x
-  // Please -1 to get the actual array index
-  getColumnIndex: function(x) {
-    return (x / (this.data.windowWidth / 4) + 0.5).toFixed(0);
-  },
+
   dummyStart: function(e) {
-    console.log('start' + e);
+    // console.log('start' + e);
+    // this.dummyTap(e);
+    var x = e.touches[0].x,
+      y = e.touches[0].y;
+    console.log('dummy start: ' + x + ', ' + y);
+    var column = this.getCanvasColumnIndex(x);
+    var row = this.getCanvasRowIndex(y);
+    var recWidth = this.data.recWidth,
+      recHeight = this.data.recHeight;
+    console.log('(' + row + ', ' + column + ')');
+    const context = wx.createCanvasContext('1');
+    // judege if the draw green or white
+    var arrayIndex = row * 4 + column;
+    var newCanvasBlocks = this.data.canvasBlocks;
+    if (newCanvasBlocks[arrayIndex] === 0) {
+      context.setFillStyle('green');
+      newCanvasBlocks[arrayIndex] = 1;
+    } else {
+      context.setFillStyle('white');
+      context.setStrokeStyle('black');
+      newCanvasBlocks[arrayIndex] = 0;
+    }
+    this.setData({
+      canvasBlocks: newCanvasBlocks
+    })
+    // draw green rectangle here
+    context.fillRect(recWidth * column,
+      recHeight * row, recWidth, recHeight);
+    context.draw(true);
   },
   dummyMove: function(e) {
     console.log('move (' + e.touches[0].x + ', ' + e.touches[0].y
@@ -173,5 +183,36 @@ Page( {
   },
   dummyEnd: function(e) {
     console.log('end' + e);
+  },
+  // tap to draw a green rectangle
+  dummyTap: function(e) {
+    var x = e.touches[0].pageX,
+      y = e.touches[0].pageY;
+    console.log('dummy tap: ' + x + ', ' + y);
+    var column = this.getCanvasColumnIndex(x);
+    var row = this.getCanvasRowIndex(y);
+    var recWidth = this.data.recWidth,
+      recHeight = this.data.recHeight;
+    console.log('(' + row + ', ' + column + ')');
+    const context = wx.createCanvasContext('1');
+    // draw green rectangle here
+    context.setFillStyle('green');
+    context.fillRect(recWidth * column, 
+      recHeight * row, recWidth, recHeight);
+    context.draw(true);
+  },
+  // This function returns the column index of a given position x
+  // Please -1 to get the actual array index
+  getColumnIndex: function (x) {
+    return (x / (this.data.windowWidth / 4) + 0.5).toFixed(0);
+  },
+
+  getCanvasColumnIndex: function (x) {
+    //console.log('getCanvasColumnIndex gets a paramter ' + x)
+    return (Number(x) / (this.data.canvasWidth / 4) + 0.5).toFixed(0) - 1;
+  },
+
+  getCanvasRowIndex: function (y) {
+    return (Number(y) / (this.data.canvasHeight / 4) + 0.5).toFixed(0) - 1;
   }
 })
