@@ -164,7 +164,45 @@ Page( {
     if (newCanvasBlocks[arrayIndex] === 0) {
       context.setFillStyle('green');
       newCanvasBlocks[arrayIndex] = 1;
+      this.setData({
+        startWhite: true
+      })
     } else {
+      context.setFillStyle('white');
+      context.setStrokeStyle('black');
+      newCanvasBlocks[arrayIndex] = 0;
+      this.setData({
+        startWhite: false
+      })
+    }
+    this.setData({
+      canvasBlocks: newCanvasBlocks
+    })
+    // draw green rectangle here
+    context.fillRect(recWidth * column,
+      recHeight * row, recWidth, recHeight);
+    context.draw(true);
+  },
+  dummyMove: function(e) {
+    var x = e.touches[0].x,
+      y = e.touches[0].y;
+    console.log('dummy move: ' + x + ', ' + y);
+    var column = this.getCanvasColumnIndex(x);
+    var row = this.getCanvasRowIndex(y);
+    var recWidth = this.data.recWidth,
+      recHeight = this.data.recHeight;
+    const context = wx.createCanvasContext('1');
+    // judege if to draw green or white
+    var arrayIndex = row * 4 + column;
+    var newCanvasBlocks = this.data.canvasBlocks;
+    if (this.data.startWhite) {
+      if (newCanvasBlocks[arrayIndex] === 1)
+        return;
+      context.setFillStyle('green');
+      newCanvasBlocks[arrayIndex] = 1;
+    } else {
+      if (newCanvasBlocks[arrayIndex] === 0)
+        return;
       context.setFillStyle('white');
       context.setStrokeStyle('black');
       newCanvasBlocks[arrayIndex] = 0;
@@ -176,10 +214,6 @@ Page( {
     context.fillRect(recWidth * column,
       recHeight * row, recWidth, recHeight);
     context.draw(true);
-  },
-  dummyMove: function(e) {
-    console.log('move (' + e.touches[0].x + ', ' + e.touches[0].y
-      + ').');
   },
   dummyEnd: function(e) {
     console.log('end' + e);
