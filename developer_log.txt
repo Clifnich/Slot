@@ -10,4 +10,4 @@ becomes white.
 User story #3. If I move around my finger, I can make all cells that it 
 has gone through green, or white based on the starting color. 
 
-Result: store #1 is done.
+Result: are three stories are done in one afternoon.

@@ -33,6 +33,7 @@ Page( {
     canvasHeight: 0,
     recWidth: 0,
     recHeight: 0,
+    // 0 means the block is white, 1 means it is green
     canvasBlocks: [0,0,0,0,
                     0,0,0,0,
                     0,0,0,0, 
@@ -179,8 +180,10 @@ Page( {
       canvasBlocks: newCanvasBlocks
     })
     // draw green rectangle here
-    context.fillRect(recWidth * column,
+    context.rect(recWidth * column,
       recHeight * row, recWidth, recHeight);
+    context.fill();
+    context.stroke();
     context.draw(true);
   },
   dummyMove: function(e) {
@@ -211,8 +214,10 @@ Page( {
       canvasBlocks: newCanvasBlocks
     })
     // draw green rectangle here
-    context.fillRect(recWidth * column,
+    context.rect(recWidth * column,
       recHeight * row, recWidth, recHeight);
+    context.fill();
+    context.stroke();
     context.draw(true);
   },
   dummyEnd: function(e) {
