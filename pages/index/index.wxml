@@ -1,3 +1,4 @@
+<!--
 <view class="row">
   <block wx:for="{{array1}}" wx:key="">
     <view class="column {{item.changeColor ? 'selected' : 'normal'}}"
@@ -24,8 +25,9 @@
       Column #{{item.id}}
     </view>
   </block>
-</view>
+</view> -->
 <!-- TODO Try to make a canvas here and test the preventing scrolling technique. -->
 <canvas disable-scroll="true" bindtouchstart="dummyStart"
  bindtouchmove="dummyMove" bindtouchend="dummyEnd" 
- canvas-id="1" class="canvas"/>
+ canvas-id="1" style="width: {{canvasWidth}}px; height: {{canvasHeight}}px"
+  class="canvas"/>

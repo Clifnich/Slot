@@ -28,7 +28,9 @@ Page( {
     ],
     startWhite: true,
     windowWidth: 0,
-    windowHeight: 0
+    windowHeight: 0,
+    canvasWidth: 0,
+    canvasHeight: 0
   },
 
   onLoad: function() {
@@ -41,7 +43,9 @@ Page( {
     });
     this.setData({
       windowWidth: windowWidth,
-      windowHeight: windowHeight
+      windowHeight: windowHeight,
+      canvasWidth: windowWidth - 2,
+      canvasHeight: (windowHeight * 0.8)
     });
     console.log("Set windowWidth to be: " + this.data.windowWidth);
     console.log("Set windowHeight to be: " + this.data.windowHeight);
@@ -51,17 +55,29 @@ Page( {
   // when the elements are ready, draw rectangles on the canvas
   onReady: function(e) {
     console.log('This is ready function!');
-    var recWidth = 150, recHeight = 75;
+    var recWidth = this.data.canvasWidth / 4, 
+      recHeight = this.data.canvasHeight / 4;
     const context = wx.createCanvasContext('1');
-    context.rect(0, 0, recWidth, recHeight);
-    context.stroke();
-    context.rect(150, 0, recWidth, recHeight);
-    context.stroke();
-    context.rect(0, 75, recWidth, recHeight);
-    context.stroke();
-    context.rect(150, 75, recWidth, recHeight);
-    context.stroke();
+    for (var i = 0; i < 4; i++) {
+      for (var j = 0; j < 4; j++) {
+        context.rect(recWidth * i, recHeight * j, recWidth, recHeight);
+        context.stroke();
+      }
+    }
     context.draw();
+    // context.rect(0, 0, recWidth, recHeight);
+    // context.stroke();
+    // context.rect(recWidth, 0, recWidth, recHeight);
+    // context.stroke();
+    // context.rect(recWidth * 2, 0, recWidth, recHeight);
+    // context.stroke();
+    // context.rect(recWidth * 3, 0, recWidth, recHeight);
+    // context.stroke();
+    // context.rect(0, 75, recWidth, recHeight);
+    // context.stroke();
+    // context.rect(150, 75, recWidth, recHeight);
+    // context.stroke();
+    // context.draw();
     // var context = wx.createCanvasContext('1');
     // context.strokeRect(0, 500, 10, 10);
     // context.draw();
