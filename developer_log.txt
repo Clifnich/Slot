@@ -1,0 +1,11 @@
+2017.9.10
+Big Store: Stop the page from scrolling!
+
+User story #1. I'm confronted with a 4x4 table. If I move my finger up or
+side-way, the page doesn't move with it.
+
+User story #2. I tap on each cell, it becomes green. If I tap again, it 
+becomes white.
+
+User story #3. If I move around my finger, I can make all cells that it 
+has gone through green, or white based on the starting color. 
