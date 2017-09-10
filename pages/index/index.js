@@ -45,6 +45,36 @@ Page( {
     });
     console.log("Set windowWidth to be: " + this.data.windowWidth);
     console.log("Set windowHeight to be: " + this.data.windowHeight);
+    
+  },
+
+  // when the elements are ready, draw rectangles on the canvas
+  onReady: function(e) {
+    console.log('This is ready function!');
+    var recWidth = 150, recHeight = 75;
+    const context = wx.createCanvasContext('1');
+    context.rect(0, 0, recWidth, recHeight);
+    context.stroke();
+    context.rect(150, 0, recWidth, recHeight);
+    context.stroke();
+    context.rect(0, 75, recWidth, recHeight);
+    context.stroke();
+    context.rect(150, 75, recWidth, recHeight);
+    context.stroke();
+    context.draw();
+    // var context = wx.createCanvasContext('1');
+    // context.strokeRect(0, 500, 10, 10);
+    // context.draw();
+    // context.stroke();
+    // context.rect(156, 445, 312, middleHeight);
+    // context.stroke();
+    // context.rect(0, middleHeight, 156, windowHeight);
+    // context.stroke();
+    // context.rect(156, middleHeight, 312, windowHeight);
+    // wx.drawCanvas({
+    //   canvasId: 1,
+    //   actions: context.getActions()
+    // });
   },
 
   // this function listens to user's finger movement
@@ -122,7 +152,8 @@ Page( {
     console.log('start' + e);
   },
   dummyMove: function(e) {
-    console.log('move' + e);
+    console.log('move (' + e.touches[0].x + ', ' + e.touches[0].y
+      + ').');
   },
   dummyEnd: function(e) {
     console.log('end' + e);
