@@ -34,10 +34,23 @@ Page( {
     recWidth: 0,
     recHeight: 0,
     // 0 means the block is white, 1 means it is green
-    canvasBlocks: [0,0,0,0,
-                    0,0,0,0,
-                    0,0,0,0, 
-                    0,0,0,0]
+    canvasBlocks: [0,0,0,0,0,0,0,
+      0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0]
   },
 
   onLoad: function() {
@@ -52,7 +65,7 @@ Page( {
       windowWidth: windowWidth,
       windowHeight: windowHeight,
       canvasWidth: windowWidth - 2,
-      canvasHeight: (windowHeight * 0.8)
+      canvasHeight: (windowHeight * 1)
     });
     console.log("Set windowWidth to be: " + this.data.windowWidth);
     console.log("Set windowHeight to be: " + this.data.windowHeight);
@@ -62,11 +75,12 @@ Page( {
   // when the elements are ready, draw rectangles on the canvas
   onReady: function(e) {
     console.log('This is ready function!');
-    var recWidth = this.data.canvasWidth / 4, 
-      recHeight = this.data.canvasHeight / 4;
+    var numOfRectInRow = 7, numOfRectInColumn = 17;
+    var recWidth = this.data.canvasWidth / numOfRectInRow, 
+      recHeight = this.data.canvasHeight / numOfRectInColumn;
     const context = wx.createCanvasContext('1');
-    for (var i = 0; i < 4; i++) {
-      for (var j = 0; j < 4; j++) {
+    for (var i = 0; i < numOfRectInRow; i++) {
+      for (var j = 0; j < numOfRectInColumn; j++) {
         context.rect(recWidth * i, recHeight * j, recWidth, recHeight);
         context.stroke();
         // context.setFillStyle('green');
@@ -160,7 +174,7 @@ Page( {
     console.log('(' + row + ', ' + column + ')');
     const context = wx.createCanvasContext('1');
     // judege if the draw green or white
-    var arrayIndex = row * 4 + column;
+    var arrayIndex = row * 7 + column;
     var newCanvasBlocks = this.data.canvasBlocks;
     if (newCanvasBlocks[arrayIndex] === 0) {
       context.setFillStyle('green');
@@ -176,9 +190,9 @@ Page( {
         startWhite: false
       })
     }
-    this.setData({
-      canvasBlocks: newCanvasBlocks
-    })
+    // this.setData({
+    //   canvasBlocks: newCanvasBlocks
+    // })
     // draw green rectangle here
     context.rect(recWidth * column,
       recHeight * row, recWidth, recHeight);
@@ -194,25 +208,27 @@ Page( {
     var row = this.getCanvasRowIndex(y);
     var recWidth = this.data.recWidth,
       recHeight = this.data.recHeight;
-    const context = wx.createCanvasContext('1');
+    var context = null;
     // judege if to draw green or white
-    var arrayIndex = row * 4 + column;
+    var arrayIndex = row * 7 + column;
     var newCanvasBlocks = this.data.canvasBlocks;
     if (this.data.startWhite) {
       if (newCanvasBlocks[arrayIndex] === 1)
         return;
+      context = wx.createCanvasContext('1');
       context.setFillStyle('green');
       newCanvasBlocks[arrayIndex] = 1;
     } else {
       if (newCanvasBlocks[arrayIndex] === 0)
         return;
+      context = wx.createCanvasContext('1');
       context.setFillStyle('white');
       context.setStrokeStyle('black');
       newCanvasBlocks[arrayIndex] = 0;
     }
-    this.setData({
-      canvasBlocks: newCanvasBlocks
-    })
+    // this.setData({
+    //   canvasBlocks: newCanvasBlocks
+    // })
     // draw green rectangle here
     context.rect(recWidth * column,
       recHeight * row, recWidth, recHeight);
@@ -248,10 +264,10 @@ Page( {
 
   getCanvasColumnIndex: function (x) {
     //console.log('getCanvasColumnIndex gets a paramter ' + x)
-    return (Number(x) / (this.data.canvasWidth / 4) + 0.5).toFixed(0) - 1;
+    return (Number(x) / (this.data.canvasWidth / 7) + 0.5).toFixed(0) - 1;
   },
 
   getCanvasRowIndex: function (y) {
-    return (Number(y) / (this.data.canvasHeight / 4) + 0.5).toFixed(0) - 1;
+    return (Number(y) / (this.data.canvasHeight / 17) + 0.5).toFixed(0) - 1;
   }
 })
