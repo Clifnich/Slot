@@ -1,0 +1,11 @@
+slot user stories
+
+#1. At the first time, user is prompted to enter the number of teammates in his team.
+
+#2. The start page also has a ‘Create’ button. After clicking it, user is confronted with a 17x7 boxes.
+
+#3. User can tap and drag to color the boxes. After this is done, they can send this page to other user.
+
+#4. As another user, I get the message from a friend. I can drag and tap on the box too. The boxes that are already green will be thicker in color while those that are still white will be green.
+
+#5. Every user that has access to this page can monitor the latest information about the team’s collective availability.
