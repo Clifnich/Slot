@@ -1,0 +1,33 @@
+<!--
+<view class="row">
+  <block wx:for="{{array1}}" wx:key="">
+    <view class="column {{item.changeColor ? 'selected' : 'normal'}}"
+      bindtouchmove="handletouch"
+      bindtouchstart="handletouchstart">
+      Column #{{item.id}}
+    </view>
+  </block>
+</view>
+<view class="row">
+  <block wx:for="{{array2}}" wx:key="">
+    <view class="column {{item.changeColor ? 'selected' : 'normal'}}"
+      bindtouchmove="handletouch"
+      bindtouchstart="handletouchstart">
+      Column #{{item.id}}
+    </view>
+  </block>
+</view>
+<view class="row">
+  <block wx:for="{{array3}}" wx:key="">
+    <view class="column {{item.changeColor ? 'selected' : 'normal'}}"
+      bindtouchmove="handletouch"
+      bindtouchstart="handletouchstart">
+      Column #{{item.id}}
+    </view>
+  </block>
+</view> -->
+<!-- TODO Try to make a canvas here and test the preventing scrolling technique. -->
+<canvas disable-scroll="true" bindtouchstart="dummyStart"
+ bindtouchmove="dummyMove" bindtouchend="dummyEnd" 
+ canvas-id="1" style="width: {{canvasWidth}}px; height: {{canvasHeight}}px"
+  class="canvas"/>
