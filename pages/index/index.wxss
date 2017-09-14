@@ -1,19 +1,49 @@
 /* pages/index/index.wxss */
 
-.label {
+.label, .header {
   font-size: 30px;
 }
 
-.input {
-  border: 1px solid black;
-  margin-top: 15px;
-  height: 40px;
+.header {
+  margin-bottom: 30px;
 }
 
-.label, .input {
+.input {
+  border: 2px solid #d1d1ca;
+  margin-top: 15px;
+  margin-bottom: 50px;
+  font-size: 15px;
+  /*height: 40px;*/
+}
+
+.label, .input, .header{
   margin-left: 30px;
+  padding: 5px;
+  padding-right: 20px;
 }
 
 .container {
   width: 80%;
+}
+
+.first-checkbox {
+  width: 120px;
+}
+
+.time-input {
+  border: 1px solid #d1d1ca;
+  display: flex;
+  margin-left: 30px;
+}
+
+.time-input-small {
+  border: 1px solid #d1d1ca;
+  padding: 5px;
+  padding-left: 10px;
+  width: 70px;
+}
+
+.submit {
+  margin-top: 30px;
+  margin-left: 30px;
 }

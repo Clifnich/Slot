@@ -27,7 +27,10 @@
   </block>
 </view> -->
 <!-- TODO Try to make a canvas here and test the preventing scrolling technique. -->
+<container>
+Sunday, Monday, Tuesday, ..., Saturday
 <canvas disable-scroll="true" bindtouchstart="dummyStart"
  bindtouchmove="dummyMove" bindtouchend="dummyEnd" 
  canvas-id="1" style="width: {{canvasWidth}}px; height: {{canvasHeight}}px"
   class="canvas"/>
+</container>

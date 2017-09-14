@@ -5,7 +5,15 @@ Page({
    * 页面的初始数据
    */
   data: {
-  
+    weekdays: [
+      {name: 'Sunday', value: 'Sunday'},
+      {name: 'Monday', value: 'Monday'},
+      {name: 'Tuesday', value: 'Tuesday'},
+      {name: 'Wednesday', value: 'Wednesday'},
+      {name: 'Thursday', value: 'Thursday'},
+      {name: 'Friday', value: 'Friday'},
+      {name: 'Saturday', value: 'Saturday'}
+    ]
   },
 
   /**
@@ -62,5 +70,11 @@ Page({
    */
   onShareAppMessage: function () {
   
+  },
+
+  buttonAction: function() {
+    wx.navigateTo({
+      url: '../box/box'
+    });
   }
 })
