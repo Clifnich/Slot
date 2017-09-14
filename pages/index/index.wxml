@@ -11,30 +11,11 @@
   <view class="label">
     What weekdays do you want to include?
   </view>
-  <checkout-group class="input">
-    <view>
-      <checkbox value="Sunday"/>Sunday
-    </view>
-    <view>
-      <checkbox value="Monday"/>Monday
-    </view>
-    <view>
-      <checkbox value="Tuesday"/>Tuesday
-    </view>
-    <view>
-      <checkbox value="Wednesday"/>Wednesday
-    </view>
-    <view>
-      <checkbox value="Thursday"/>Thursday
-    </view>
-    <view>
-      <checkbox value="Friday"/>Friday
-    </view>
-    <view>
-      <checkbox value="Saturday"/>Saturday
-    </view>
-  </checkout-group>
-
+  <checkbox-group class="input" bindchange="checkboxChange">
+    <label wx:for="{{weekdays}}" wx:key="">
+      <view><checkbox value="{{item.value}}" checked="{{item.checked}}"/>{{item.name}}</view>
+    </label>
+  </checkbox-group>
   <view class="label">
     Select the start and end time in a day
   </view>

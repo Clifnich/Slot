@@ -6,14 +6,15 @@ Page({
    */
   data: {
     weekdays: [
-      {name: 'Sunday', value: 'Sunday'},
-      {name: 'Monday', value: 'Monday'},
-      {name: 'Tuesday', value: 'Tuesday'},
-      {name: 'Wednesday', value: 'Wednesday'},
-      {name: 'Thursday', value: 'Thursday'},
-      {name: 'Friday', value: 'Friday'},
-      {name: 'Saturday', value: 'Saturday'}
-    ]
+      {name: 'Sunday', value: '0'},
+      {name: 'Monday', value: '1'},
+      {name: 'Tuesday', value: '2'},
+      {name: 'Wednesday', value: '3'},
+      {name: 'Thursday', value: '4'},
+      {name: 'Friday', value: '5'},
+      {name: 'Saturday', value: '6'}
+    ],
+    weekdayArray: [0,0,0,0,0,0,0]
   },
 
   /**
@@ -74,7 +75,18 @@ Page({
 
   buttonAction: function() {
     wx.navigateTo({
-      url: '../box/box?startTime=7&endTime=10&weekdayLine=111111'
+      url: '../box/box?startTime=7&endTime=10&weekdayLine=' + this.data.weekdayArray.join('')
     });
+  },
+
+  checkboxChange: function (e) {
+    console.log('checkbox发生change事件，携带value值为：', e.detail.value)
+    var newWeekdayArray = [0,0,0,0,0,0,0];
+    for (var i = 0; i < e.detail.value.length; i++) {
+      newWeekdayArray[e.detail.value[i]] = 1;
+    }
+    this.setData({
+      weekdayArray: newWeekdayArray
+    })
   }
 })
