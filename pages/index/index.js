@@ -74,7 +74,7 @@ Page({
 
   buttonAction: function() {
     wx.navigateTo({
-      url: '../box/box'
+      url: '../box/box?startTime=7&endTime=10&weekdayLine=111111'
     });
   }
 })

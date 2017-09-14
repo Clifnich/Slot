@@ -27,10 +27,22 @@
   </block>
 </view> -->
 <!-- TODO Try to make a canvas here and test the preventing scrolling technique. -->
-<container>
-Sunday, Monday, Tuesday, ..., Saturday
-<canvas disable-scroll="true" bindtouchstart="dummyStart"
- bindtouchmove="dummyMove" bindtouchend="dummyEnd" 
- canvas-id="1" style="width: {{canvasWidth}}px; height: {{canvasHeight}}px"
-  class="canvas"/>
-</container>
+
+<view class="canvasBody">
+  <view class="header">
+    <block wx:for="{{weekdayArray}}" wx:key="">
+      <view style="width: {{recWidth}}px;">{{item}}</view>
+    </block>
+  </view>
+  <view class="body">
+    <view>
+      <block wx:for="{{timeArray}}" wx:key="">
+        <view style="height: {{recHeight}}px;">{{item}}</view>
+      </block>
+    </view>
+    <canvas disable-scroll="true" bindtouchstart="dummyStart"
+    bindtouchmove="dummyMove" bindtouchend="dummyEnd" 
+    canvas-id="1" style="width: {{canvasWidth}}px; height: {{canvasHeight}}px"
+      class="canvas"/>
+  </view>
+</view>
