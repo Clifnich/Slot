@@ -14,7 +14,9 @@ Page({
       {name: 'Friday', value: '5'},
       {name: 'Saturday', value: '6'}
     ],
-    weekdayArray: [0,0,0,0,0,0,0]
+    weekdayArray: [0,0,0,0,0,0,0],
+    startTime: 7,
+    endTime: 23
   },
 
   /**
@@ -75,12 +77,13 @@ Page({
 
   buttonAction: function() {
     wx.navigateTo({
-      url: '../box/box?startTime=7&endTime=10&weekdayLine=' + this.data.weekdayArray.join('')
+      url: '../box/box?startTime=' + this.data.startTime 
+        + '&endTime=' + this.data.endTime + '&weekdayLine=' + this.data.weekdayArray.join('')
     });
   },
 
   checkboxChange: function (e) {
-    console.log('checkbox发生change事件，携带value值为：', e.detail.value)
+    console.log('checkbox发生change事件，携带value值为：', e.detail.value);
     var newWeekdayArray = [0,0,0,0,0,0,0];
     for (var i = 0; i < e.detail.value.length; i++) {
       newWeekdayArray[e.detail.value[i]] = 1;
@@ -88,5 +91,20 @@ Page({
     this.setData({
       weekdayArray: newWeekdayArray
     })
-  }
+  },
+
+  bindTimeChange1: function (e) {
+    var startTime = Number(e.detail.value.split(':')[0]);
+    console.log('time1发生change事件，携带value值为：', startTime);
+    this.setData( {
+      startTime: startTime
+    })
+  },
+  bindTimeChange2: function (e) {
+    var endTime = Number(e.detail.value.split(':')[0]);
+    console.log('time2发生change事件，携带value值为：', endTime);
+    this.setData({
+      endTime: endTime 
+    })
+  },
 })
