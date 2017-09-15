@@ -2,6 +2,7 @@
   "pages":[
     "pages/index/index",
     "pages/box/box",
+    "pages/sharedBox/shared-box",
     "pages/logs/logs"
   ],
   "window":{

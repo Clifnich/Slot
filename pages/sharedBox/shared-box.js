@@ -57,7 +57,7 @@ Page( {
       weekdayArray: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
       numOfRectInRow: 7,
       numOfRectinCol: 17,
-      numOfMembers: 1
+      colorStatus: '010'
   },
 
   onLoad: function(option) {
@@ -107,7 +107,7 @@ Page( {
       numOfRectInRow: count,
       numOfRectInCol: option.endTime - option.startTime + 1,
       weekdayArray: newWeekdayArray,
-      numOfMembers: option.numOfMembers
+      colorStatus: option.colorStatus
     });
   },
 
@@ -118,15 +118,24 @@ Page( {
     var recWidth = this.data.canvasWidth / numOfRectInRow, 
       recHeight = this.data.canvasHeight / numOfRectInColumn;
     const context = wx.createCanvasContext('1');
+    var k = 0, colorStatus = this.data.colorStatus;
     for (var i = 0; i < numOfRectInRow; i++) {
       for (var j = 0; j < numOfRectInColumn; j++) {
+        context.setFillStyle('white');
         context.rect(recWidth * i, recHeight * j, recWidth, recHeight);
         context.stroke();
         // context.setFillStyle('green');
         // context.fillRect(recWidth * i, recHeight * j, recWidth, recHeight);
+        if (colorStatus.length > k && colorStatus[k] === '1') {
+          console.log('k is: ' + k);
+          context.setFillStyle('#00ff00');
+          context.fill();
+        }
+        context.draw(true);
+        k++;
       }
     }
-    context.draw();
+    //context.draw();
     this.setData({
       recWidth: recWidth,
       recHeight: recHeight,
