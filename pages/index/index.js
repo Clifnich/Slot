@@ -16,7 +16,18 @@ Page({
     ],
     weekdayArray: [0,0,0,0,0,0,0],
     startTime: 7,
-    endTime: 23
+    endTime: 23,
+    numOfMembers: '# of team members'
+  },
+
+  /**
+   * Handle # of team members input 
+   */
+  inputMembers: function(e) {
+    //console.log(e.detail.value);
+    this.setData({
+      numOfMembers: Number(e.detail.value)
+    })
   },
 
   /**
@@ -79,6 +90,7 @@ Page({
     wx.navigateTo({
       url: '../box/box?startTime=' + this.data.startTime 
         + '&endTime=' + this.data.endTime + '&weekdayLine=' + this.data.weekdayArray.join('')
+        + '&numOfMembers=' + this.data.numOfMembers
     });
   },
 

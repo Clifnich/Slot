@@ -57,7 +57,9 @@ Page( {
       weekdayArray: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
       numOfRectInRow: 7,
       numOfRectinCol: 17,
-      numOfMembers: 1
+      numOfMembers: 1,
+      rectColor: 'green',
+      hexadecimal: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
   },
 
   onLoad: function(option) {
@@ -107,8 +109,27 @@ Page( {
       numOfRectInRow: count,
       numOfRectInCol: option.endTime - option.startTime + 1,
       weekdayArray: newWeekdayArray,
-      numOfMembers: option.numOfMembers
+      numOfMembers: option.numOfMembers,
+      rectColor: this.getRectColor(option.numOfMembers)
     });
+  },
+
+  // compute the rectangle color
+  getRectColor: function(numOfMembers) {
+    var result = 'green';
+    var color = (512 / (Number(numOfMembers) + 1)).toFixed(0);
+    //console.log('color is: [' + color + '].');
+    if (color <= 255) {
+      // var firstTwoChars = color.toString(16);
+      // result = '#' + firstTwoChars + 'ff' + firstTwoChars;
+      color = 256 - color;
+      var firstBit = this.data.hexadecimal[(color / 16).toFixed(0)];
+      var secondBit = this.data.hexadecimal[(color % 16).toFixed(0)];
+      //console.log('first: ' + firstBit + ', second: ' + secondBit);
+      result = '#' + firstBit + secondBit + 'ff' + firstBit + secondBit;
+    }
+    console.log('set color to: [' + result + '].');
+    return result;
   },
 
   // when the elements are ready, draw rectangles on the canvas
@@ -216,7 +237,8 @@ Page( {
     var arrayIndex = row * this.data.numOfRectInRow + column;
     var newCanvasBlocks = this.data.canvasBlocks;
     if (newCanvasBlocks[arrayIndex] === 0) {
-      context.setFillStyle('green');
+      //console.log(newCanvasBlocks[arrayIndex] + ' less than numOfMembers ' + this.data.numOfMembers);
+      context.setFillStyle(this.data.rectColor);
       newCanvasBlocks[arrayIndex] = 1;
       this.setData({
         startWhite: true
@@ -224,7 +246,7 @@ Page( {
     } else {
       context.setFillStyle('white');
       context.setStrokeStyle('black');
-      newCanvasBlocks[arrayIndex] = 0;
+      newCanvasBlocks[arrayIndex]--;
       this.setData({
         startWhite: false
       })
@@ -242,7 +264,7 @@ Page( {
   dummyMove: function(e) {
     var x = e.touches[0].x,
       y = e.touches[0].y;
-    console.log('dummy move: ' + x + ', ' + y);
+    //console.log('dummy move: ' + x + ', ' + y);
     var column = this.getCanvasColumnIndex(x);
     var row = this.getCanvasRowIndex(y);
     var recWidth = this.data.recWidth,
@@ -255,7 +277,7 @@ Page( {
       if (newCanvasBlocks[arrayIndex] === 1)
         return;
       context = wx.createCanvasContext('1');
-      context.setFillStyle('green');
+      context.setFillStyle(this.data.rectColor);
       newCanvasBlocks[arrayIndex] = 1;
     } else {
       if (newCanvasBlocks[arrayIndex] === 0)
@@ -290,7 +312,7 @@ Page( {
     console.log('(' + row + ', ' + column + ')');
     const context = wx.createCanvasContext('1');
     // draw green rectangle here
-    context.setFillStyle('green');
+    context.setFillStyle(this.data.rectColor);
     context.fillRect(recWidth * column, 
       recHeight * row, recWidth, recHeight);
     context.draw(true);
