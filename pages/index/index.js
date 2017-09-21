@@ -24,7 +24,7 @@ Page({
    * Handle # of team members input 
    */
   inputMembers: function(e) {
-    //console.log(e.detail.value);
+    console.log('input number: [' + e.detail.value + '].');
     this.setData({
       numOfMembers: Number(e.detail.value)
     })
@@ -87,10 +87,18 @@ Page({
   },
 
   buttonAction: function() {
+    var newUrl = [];
+    newUrl.push('../box/box?startTime=');
+    newUrl.push(this.data.startTime);
+    newUrl.push('&endTime=');
+    newUrl.push(this.data.endTime);
+    newUrl.push('&weekdayLine=');
+    newUrl.push(this.data.weekdayArray.join(''));
+    newUrl.push('&numOfMembers=');
+    newUrl.push(this.data.numOfMembers);
+    console.log('navigating to: [' + newUrl.join('') + '].');
     wx.navigateTo({
-      url: '../box/box?startTime=' + this.data.startTime 
-        + '&endTime=' + this.data.endTime + '&weekdayLine=' + this.data.weekdayArray.join('')
-        + '&numOfMembers=' + this.data.numOfMembers
+      url: newUrl.join('')
     });
   },
 
