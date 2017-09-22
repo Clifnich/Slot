@@ -135,13 +135,46 @@ Page( {
   },
 
   getRectColor: function(index) {
-
     var colorNumber = 512 / (Number(this.data.numOfMembers) + 1) * Number(this.data.colorStatus[index]);
     if (colorNumber === 0)
       return '#ffffff';
     // console.log('index is: [' + index + '].');
     // console.log('numOfMembers is: [' + Number(this.data.colorStatus[index]) + '].');
     console.log('colorNumber is: [' + colorNumber + '].');
+    var result = '#00ff00';
+    if (colorNumber === 256)
+      return result;
+    if (colorNumber < 256) {
+      colorNumber = 256 - colorNumber;
+      var firstBit = this.data.hexadecimal[(colorNumber / 16).toFixed(0)];
+      var secondBit = this.data.hexadecimal[(colorNumber % 16).toFixed(0)];
+      //console.log('first: ' + firstBit + ', second: ' + secondBit);
+      result = '#' + firstBit + secondBit + 'ff' + firstBit + secondBit;
+    } else if (colorNumber > 256) {
+      colorNumber = 256 - (colorNumber - 256);
+      var firstBit = this.data.hexadecimal[(colorNumber / 16).toFixed(0)];
+      var secondBit = this.data.hexadecimal[(colorNumber % 16).toFixed(0)];
+      //console.log('first: ' + firstBit + ', second: ' + secondBit);
+      result = '#00' + firstBit + secondBit + '00';
+    }
+
+    return result;
+  },
+
+  getForwardColor: function(index) {
+    var colorNumber = 512 / (Number(this.data.numOfMembers) + 1) * (Number(this.data.colorStatus[index]) + 1);
+    return this.getColorForNumber(colorNumber);
+  },
+
+  getBackwardColor: function(index) {
+    if (Number(this.data.colorStatus[index]) === 0) {
+      return 'white';
+    }
+    var colorNumber = 512 / (Number(this.data.numOfMembers) + 1) * (Number(this.data.colorStatus[index]) - 1);
+    return this.getColorForNumber(colorNumber);
+  },
+
+  getColorForNumber(colorNumber) {
     var result = '#00ff00';
     if (colorNumber === 256)
       return result;
@@ -175,16 +208,20 @@ Page( {
     console.log('(' + row + ', ' + column + ')');
     const context = wx.createCanvasContext('1');
     // judege if the draw green or white
-    var arrayIndex = row * this.data.numOfRectInRow + column;
+    //var arrayIndex = row * this.data.numOfRectInRow + column;
+    var arrayIndex = column * this.data.numOfRectInCol + row;
     var newCanvasBlocks = this.data.canvasBlocks;
     if (newCanvasBlocks[arrayIndex] === 0) {
-      context.setFillStyle('green');
+      context.setFillStyle(this.getForwardColor(arrayIndex));
       newCanvasBlocks[arrayIndex] = 1;
       this.setData({
         startWhite: true
       })
+      // TODO change color status
+      //var colorStatus = this.data.colorStatus;
+      //colorStatus[arrayIndex] = Number(colorStatus[arrayIndex]) + 1;
     } else {
-      context.setFillStyle('white');
+      context.setFillStyle(this.getBackwardColor(arrayIndex));
       context.setStrokeStyle('black');
       newCanvasBlocks[arrayIndex] = 0;
       this.setData({
@@ -211,19 +248,20 @@ Page( {
       recHeight = this.data.recHeight;
     var context = null;
     // judege if to draw green or white
-    var arrayIndex = row * this.data.numOfRectInRow + column;
+    //var arrayIndex = row * this.data.numOfRectInRow + column;
+    var arrayIndex = column * this.data.numOfRectInCol + row;
     var newCanvasBlocks = this.data.canvasBlocks;
     if (this.data.startWhite) {
       if (newCanvasBlocks[arrayIndex] === 1)
         return;
       context = wx.createCanvasContext('1');
-      context.setFillStyle('green');
+      context.setFillStyle(this.getForwardColor(arrayIndex));
       newCanvasBlocks[arrayIndex] = 1;
     } else {
       if (newCanvasBlocks[arrayIndex] === 0)
         return;
       context = wx.createCanvasContext('1');
-      context.setFillStyle('white');
+      context.setFillStyle(this.getBackwardColor(arrayIndex));
       context.setStrokeStyle('black');
       newCanvasBlocks[arrayIndex] = 0;
     }
