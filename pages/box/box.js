@@ -2,30 +2,6 @@
 
 Page( {
   data: {
-    // array1: [
-    //   {id: '1', changeColor: false},
-    //   {id: '2', changeColor: false},
-    //   {id: '3', changeColor: false},
-    //   {id: '4', changeColor: false}
-    // ],
-    // array2: [
-    //   {id: '5', changeColor: false},
-    //   {id: '6', changeColor: false},
-    //   {id: '7', changeColor: false},
-    //   {id: '8', changeColor: false}
-    // ],
-    // array3: [
-    //   { id: '9', changeColor: false },
-    //   { id: '10', changeColor: false },
-    //   { id: '11', changeColor: false },
-    //   { id: '12', changeColor: false }
-    // ],
-    // array4: [
-    //   { id: '13', changeColor: false },
-    //   { id: '14', changeColor: false },
-    //   { id: '15', changeColor: false },
-    //   { id: '16', changeColor: false }
-    // ],
     startWhite: true,
     windowWidth: 0,
     windowHeight: 0,
@@ -59,7 +35,9 @@ Page( {
       numOfRectinCol: 17,
       numOfMembers: 1,
       rectColor: 'green',
-      hexadecimal: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
+      hexadecimal: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'],
+      startTime: 7,
+      endTime: 23
   },
 
   onLoad: function(option) {
@@ -167,7 +145,7 @@ Page( {
     console.log('(' + row + ', ' + column + ')');
     const context = wx.createCanvasContext('1');
     // judege if the draw green or white
-    var arrayIndex = row * this.data.numOfRectInRow + column;
+    var arrayIndex = column * this.data.numOfRectInCol + row;
     var newCanvasBlocks = this.data.canvasBlocks;
     if (newCanvasBlocks[arrayIndex] === 0) {
       //console.log(newCanvasBlocks[arrayIndex] + ' less than numOfMembers ' + this.data.numOfMembers);
@@ -202,7 +180,7 @@ Page( {
       recHeight = this.data.recHeight;
     var context = null;
     // judege if to draw green or white
-    var arrayIndex = row * this.data.numOfRectInRow + column;
+    var arrayIndex = column * this.data.numOfRectInCol + row;
     var newCanvasBlocks = this.data.canvasBlocks;
     if (this.data.startWhite) {
       if (newCanvasBlocks[arrayIndex] === 1)
@@ -264,24 +242,44 @@ Page( {
   },
 
   onShareAppMessage: function (res) {
+    var path = '/page/sharedBox/shared-box';
+    var url = [];
+    url.push(path);
+    url.push('&weekdayLine='); url.push(this.data.weekdayLine);
+    url.push('&startTime='); url.push(this.data.startTime);
+    url.push('&endTime='); url.push(this.data.endTime);
+    url.push('&numOfMembers='); url.push(this.data.numOfMembers);
+
+    // create colorStatus variable
+    var colorStatus = [];
+    for (var i = 0; i < Number(this.data.numOfRectInRow) * Number(this.data.numOfRectInCol); i++) {
+      if (this.data.canvasBlocks[i] === 1) {
+        colorStatus.push('1');
+      } else {
+        colorStatus.push('0');
+      }
+    }
+    url.push('&colorStatus='); url.push(colorStatus.join(''));
     if (res.from === 'button') {
       // 来自页面内转发按钮
       console.log(res.target)
     }
     return {
       title: "Leader's Invitation",
-      path: '/page/sharedBox/shared-box',
+      path: path,
       success: function (res) {
         // 转发成功
-        console.log('re-direct is successful');
+        console.log('re-directing to [' + url.join('') + '].');
       },
       fail: function (res) {
         // 转发失败
         console.log('re-direct fails');
       },
-      weekdayLine: '1111100',
-      startTime: 8,
-      endTime: 20
+      weekdayLine: this.data.weekdayLine,
+      startTime: this.data.startTime,
+      endTime: this.data.endTime,
+      numOfMembers: this.data.numOfMembers,
+      colorStatus: colorStatus.join('')
     }
   }
 })

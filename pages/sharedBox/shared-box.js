@@ -35,11 +35,11 @@ Page( {
       numOfRectinCol: 17,
       colorStatus: '010',
       numOfMembers: 1,
-      hexadecimal: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
+      hexadecimal: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'],
+      colorLevel: ['#ffffff']
   },
 
   onLoad: function(option) {
-    console.log('option is: ' + option.weekdayLine);
     var windowWidth, windowHeight;
     wx.getSystemInfo({
       success: function (res) {
@@ -53,8 +53,6 @@ Page( {
       canvasWidth: windowWidth * 0.8,
       canvasHeight: (windowHeight * 0.8)
     });
-    console.log("Set windowWidth to be: " + this.data.windowWidth);
-    console.log("Set windowHeight to be: " + this.data.windowHeight);
     
     if (option.startTime && option.endTime && option.weekdayLine) {
       this.setData({
@@ -79,7 +77,7 @@ Page( {
         newWeekdayArray.push(this.data.constWeekdayArray[i]);
       }
     }
-    console.log('setting time array to [' + newTimeArray.join('') + '].');
+    //console.log('setting time array to [' + newTimeArray.join('') + '].');
     this.setData({
       timeArray: newTimeArray,
       numOfRectInRow: count,
@@ -88,50 +86,74 @@ Page( {
       colorStatus: option.colorStatus,
       numOfMembers: option.numOfMembers
     });
-
-    // set the colorStatus attribute
+    // set the colorStatus attribute, mostly fill 0 to the empty places
     var numOfBlocks = this.data.numOfRectInCol * this.data.numOfRectInRow;
-    if (option.colorStatus.length < numOfBlocks) {
-      var colorStatusArray = [];
-      for (var i = 0; i < numOfBlocks; i++) {
-        if (i < option.colorStatus.length)
-          colorStatusArray.push(option.colorStatus[i]);
-        else
-          colorStatusArray.push('0');
-      }
+    var colorStatusArray = [];
+    for (var i = 0; i < numOfBlocks; i++) {
+      if (i < option.colorStatus.length)
+        colorStatusArray.push(option.colorStatus[i]);
+      else
+        colorStatusArray.push('0');
     }
     this.setData({
       colorStatus: colorStatusArray.join('')
+    });
+    // console.log('After setting, color status is now: [' + this.data.colorStatus
+    //    + '].');
+
+    // set colorLevel
+    var newColorLevel = this.data.colorLevel;
+    for (var i = 0; i < this.data.numOfMembers; i++) {
+      // TODO push new colors to the end of colorLevel array
+      var colorNumber = 512 / (Number(this.data.numOfMembers) + 1) * (i + 1);
+      var result = '#00ff00';
+      if (colorNumber < 256) {
+        colorNumber = 256 - colorNumber;
+        var firstBit = this.data.hexadecimal[(colorNumber / 16).toFixed(0)];
+        var secondBit = this.data.hexadecimal[(colorNumber % 16).toFixed(0)];
+        //console.log('first: ' + firstBit + ', second: ' + secondBit);
+        result = '#' + firstBit + secondBit + 'ff' + firstBit + secondBit;
+      } else if (colorNumber > 256) {
+        colorNumber = 256 - (colorNumber - 256);
+        var firstBit = this.data.hexadecimal[(colorNumber / 16).toFixed(0)];
+        var secondBit = this.data.hexadecimal[(colorNumber % 16).toFixed(0)];
+        //console.log('first: ' + firstBit + ', second: ' + secondBit);
+        result = '#00' + firstBit + secondBit + '00';
+      }
+      newColorLevel.push(result);
+    }
+    console.log('set color level to: ' + newColorLevel.join(' '));
+    this.setData({
+      colorLevel: newColorLevel
     })
   },
 
   // when the elements are ready, draw rectangles on the canvas
   onReady: function(e) {
-    console.log('This is ready function!');
     var numOfRectInRow = this.data.numOfRectInRow, numOfRectInColumn = this.data.numOfRectInCol;
+    console.log('numOfRectInRow is ' + numOfRectInRow);
+    console.log('numOfRectInColumn is ' + numOfRectInColumn);
     var recWidth = this.data.canvasWidth / numOfRectInRow, 
       recHeight = this.data.canvasHeight / numOfRectInColumn;
+    this.setData({
+      recWidth: recWidth,
+      recHeight: recHeight,
+    });
     const context = wx.createCanvasContext('1');
     var k = 0, colorStatus = this.data.colorStatus;
     for (var i = 0; i < numOfRectInRow; i++) {
       for (var j = 0; j < numOfRectInColumn; j++) {
         context.setFillStyle('white');
-        context.setStrokeStyle('black');
         context.rect(recWidth * i, recHeight * j, recWidth, recHeight);
         context.stroke();
-        //if (colorStatus.length > k && colorStatus[k] === '1') {
-        context.setFillStyle(this.getRectColor(i * this.data.numOfRectInCol + j));
-        context.fill();
-        //}
-        context.draw(true);
+        if (colorStatus.length > k && colorStatus[k] === '1') {
+          context.setFillStyle(this.getRectColor(i * this.data.numOfRectInCol + j));
+          context.fillRect(recWidth * i, recHeight * j, recWidth, recHeight);
+        }
         k++;
       }
     }
-    //context.draw();
-    this.setData({
-      recWidth: recWidth,
-      recHeight: recHeight,
-    });
+    context.draw();
   },
 
   getRectColor: function(index) {
@@ -160,18 +182,20 @@ Page( {
 
     return result;
   },
-
+  // color level goes up by one notch
   getForwardColor: function(index) {
-    var colorNumber = 512 / (Number(this.data.numOfMembers) + 1) * (Number(this.data.colorStatus[index]) + 1);
-    return this.getColorForNumber(colorNumber);
+    // var colorNumber = 512 / (Number(this.data.numOfMembers) + 1) * (Number(this.data.colorStatus[index]) + 1);
+    // return this.getColorForNumber(colorNumber);
+    return this.data.colorLevel[Number(this.data.colorStatus[index]) + 1];
   },
-
+  // color level goes down by one notch
   getBackwardColor: function(index) {
     if (Number(this.data.colorStatus[index]) === 0) {
       return 'white';
     }
-    var colorNumber = 512 / (Number(this.data.numOfMembers) + 1) * (Number(this.data.colorStatus[index]) - 1);
-    return this.getColorForNumber(colorNumber);
+    // var colorNumber = 512 / ((Number(this.data.numOfMembers) + 1) * Number(this.data.colorStatus[index]) - 1);
+    // return this.getColorForNumber(colorNumber);
+    return this.data.colorLevel[Number(this.data.colorStatus[index]) - 1];
   },
 
   getColorForNumber(colorNumber) {
@@ -221,6 +245,7 @@ Page( {
       //var colorStatus = this.data.colorStatus;
       //colorStatus[arrayIndex] = Number(colorStatus[arrayIndex]) + 1;
     } else {
+      console.log('getBackwardColor() returns ' + this.getBackwardColor(arrayIndex));
       context.setFillStyle(this.getBackwardColor(arrayIndex));
       context.setStrokeStyle('black');
       newCanvasBlocks[arrayIndex] = 0;
@@ -241,7 +266,6 @@ Page( {
   dummyMove: function(e) {
     var x = e.touches[0].x,
       y = e.touches[0].y;
-    console.log('dummy move: ' + x + ', ' + y);
     var column = this.getCanvasColumnIndex(x);
     var row = this.getCanvasRowIndex(y);
     var recWidth = this.data.recWidth,
@@ -261,6 +285,7 @@ Page( {
       if (newCanvasBlocks[arrayIndex] === 0)
         return;
       context = wx.createCanvasContext('1');
+      console.log('getBackwardColor() returns ' + this.getBackwardColor(arrayIndex));
       context.setFillStyle(this.getBackwardColor(arrayIndex));
       context.setStrokeStyle('black');
       newCanvasBlocks[arrayIndex] = 0;
