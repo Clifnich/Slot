@@ -33,7 +33,7 @@ Page( {
       weekdayArray: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
       numOfRectInRow: 7,
       numOfRectinCol: 17,
-      colorStatus: '010',
+      colorStatus: [0,1,0],
       numOfMembers: 1,
       hexadecimal: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'],
       colorLevel: ['#ffffff']
@@ -83,7 +83,6 @@ Page( {
       numOfRectInRow: count,
       numOfRectInCol: option.endTime - option.startTime + 1,
       weekdayArray: newWeekdayArray,
-      colorStatus: option.colorStatus,
       numOfMembers: option.numOfMembers
     });
     // set the colorStatus attribute, mostly fill 0 to the empty places
@@ -91,12 +90,12 @@ Page( {
     var colorStatusArray = [];
     for (var i = 0; i < numOfBlocks; i++) {
       if (i < option.colorStatus.length)
-        colorStatusArray.push(option.colorStatus[i]);
+        colorStatusArray.push(Number(option.colorStatus[i]));
       else
-        colorStatusArray.push('0');
+        colorStatusArray.push(0);
     }
     this.setData({
-      colorStatus: colorStatusArray.join('')
+      colorStatus: colorStatusArray
     });
     // console.log('After setting, color status is now: [' + this.data.colorStatus
     //    + '].');
@@ -146,7 +145,7 @@ Page( {
         context.setFillStyle('white');
         context.rect(recWidth * i, recHeight * j, recWidth, recHeight);
         context.stroke();
-        if (colorStatus.length > k && colorStatus[k] === '1') {
+        if (colorStatus.length > k && colorStatus[k] === 1) {
           context.setFillStyle(this.getRectColor(i * this.data.numOfRectInCol + j));
           context.fillRect(recWidth * i, recHeight * j, recWidth, recHeight);
         }
@@ -235,15 +234,16 @@ Page( {
     //var arrayIndex = row * this.data.numOfRectInRow + column;
     var arrayIndex = column * this.data.numOfRectInCol + row;
     var newCanvasBlocks = this.data.canvasBlocks;
+    var colorStatus = this.data.colorStatus;
     if (newCanvasBlocks[arrayIndex] === 0) {
       context.setFillStyle(this.getForwardColor(arrayIndex));
       newCanvasBlocks[arrayIndex] = 1;
       this.setData({
         startWhite: true
       })
-      // TODO change color status
-      //var colorStatus = this.data.colorStatus;
-      //colorStatus[arrayIndex] = Number(colorStatus[arrayIndex]) + 1;
+      // update colorStatus of this box
+      colorStatus[arrayIndex] = Number(colorStatus[arrayIndex]) + 1;
+
     } else {
       console.log('getBackwardColor() returns ' + this.getBackwardColor(arrayIndex));
       context.setFillStyle(this.getBackwardColor(arrayIndex));
@@ -251,9 +251,11 @@ Page( {
       newCanvasBlocks[arrayIndex] = 0;
       this.setData({
         startWhite: false
-      })
+      }) 
+      colorStatus[arrayIndex] = Number(colorStatus[arrayIndex]) - 1;
     }
     // this.setData({
+    //   colorStatus: colorStatus,
     //   canvasBlocks: newCanvasBlocks
     // })
     // draw green rectangle here
@@ -275,12 +277,14 @@ Page( {
     //var arrayIndex = row * this.data.numOfRectInRow + column;
     var arrayIndex = column * this.data.numOfRectInCol + row;
     var newCanvasBlocks = this.data.canvasBlocks;
+    var colorStatus = this.data.colorStatus;
     if (this.data.startWhite) {
       if (newCanvasBlocks[arrayIndex] === 1)
         return;
       context = wx.createCanvasContext('1');
       context.setFillStyle(this.getForwardColor(arrayIndex));
       newCanvasBlocks[arrayIndex] = 1;
+      colorStatus[arrayIndex] = Number(colorStatus[arrayIndex]) + 1;
     } else {
       if (newCanvasBlocks[arrayIndex] === 0)
         return;
@@ -289,10 +293,8 @@ Page( {
       context.setFillStyle(this.getBackwardColor(arrayIndex));
       context.setStrokeStyle('black');
       newCanvasBlocks[arrayIndex] = 0;
+      colorStatus[arrayIndex] = Number(colorStatus[arrayIndex]) - 1;
     }
-    // this.setData({
-    //   canvasBlocks: newCanvasBlocks
-    // })
     // draw green rectangle here
     context.rect(recWidth * column,
       recHeight * row, recWidth, recHeight);
