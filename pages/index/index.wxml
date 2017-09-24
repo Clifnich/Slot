@@ -5,7 +5,7 @@
     How many team members do you have?
   </view>
   <view class="input">
-    <input type="number" placeholder='{{numOfMembers}}' bindconfirm="inputMembers" />
+    <input type="text" placeholder='{{numOfMembers}}' bindconfirm="inputMembers" />
   </view>
 
   <view class="label">
