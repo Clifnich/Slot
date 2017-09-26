@@ -20,6 +20,10 @@ public class Networks {
 	private static JSONParser parser = new JSONParser();
 	private static final Logger logger = Logger.getLogger(Networks.class);
 
+	public static String getResponseFromHttpConnection(HttpURLConnection conn) throws IOException {
+		return Networks.exhaustBr(new BufferedReader(new InputStreamReader(conn.getInputStream())));
+	}
+	
 	/**
 	 * This method connects to the server and request for JSON. By default this
 	 * method uses HTTPS connection.

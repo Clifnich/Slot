@@ -11,6 +11,7 @@ public class DialogContainer {
 	public String getNewDialog(String weekdayLine, int startTime, int endTime, int numOfMembers) {
 		RandomStringGenerator generator = new RandomStringGenerator.Builder()
 			     .withinRange('a', 'z').build();
+		@SuppressWarnings("unused")
 		String dialogId = generator.generate(20);
 		
 		return "";
@@ -27,5 +28,6 @@ public class DialogContainer {
 	}
 	
 	private static DialogContainer instance;
+	@SuppressWarnings("unused")
 	private Map<String, Dialog> dialogs;
 }
