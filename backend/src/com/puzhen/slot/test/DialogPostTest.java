@@ -25,6 +25,9 @@ public class DialogPostTest extends TestCase {
 	/**
 	 * This case actually covers all aspects of the backend.
 	 * So it should be quite complex.
+	 * step 1. create a dialog with empty leaderDrawStatus
+	 * step 2. publish your availability as memeber1 (your userId)
+	 * step 3. refresh the page, assert that drawStatus is your availability
 	 */
 	public void test0() {
 		// step 1. create a dialog with empty leaderDrawStatus

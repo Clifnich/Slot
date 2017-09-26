@@ -26,6 +26,10 @@ public class DialogGetTest extends TestCase {
 		super(name);
 	}
 
+	/**
+	 * 1. create a dialog as a leader
+	 * 2. get the dialog status from server, assert that the drawStatus is your availability
+	 */
 	public void test0() {
 		// create a dialog as a leader
 		String availability = "0111";

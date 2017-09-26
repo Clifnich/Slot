@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class DialogController {
 
-	@RequestMapping(value = "/dialog", method = RequestMethod.POST)
+	@RequestMapping(value = "/createDialog", method = RequestMethod.POST)
 	@ResponseBody
 	public String doPost(HttpServletRequest request, HttpServletResponse response) {
 		JSONObject obj = null;
@@ -51,4 +51,10 @@ public class DialogController {
 		String dialogId = generator.generate(20);
 		return dialogId;
 	}
+	
+//	@RequestMapping(value = "/createdialog", method = RequestMethod.POST)
+//	@ResponseBody
+//	public String createDialog() {
+//		return "";
+//	}
 }
