@@ -1,5 +1,7 @@
 package com.puzhen.slot.model;
 
+import javax.json.JsonObject;
+
 public class Dialog {
 
 	public String getId() {
@@ -38,14 +40,48 @@ public class Dialog {
 	public void setColorStatus(int[] colorStatus) {
 		this.colorStatus = colorStatus;
 	}
+	
+	public Dialog(JsonObject obj) {
+		weekdayLine = obj.getString("weekdayLine");
+		startTime = obj.getInt("startTime");
+		endTime = obj.getInt("endTime");
+		numOfMembers = obj.getInt("numOfMembers");
+		userIds = new String[numOfMembers];
+		setColorStatus(obj.getString("leaderDrawStatus"));
+		setLeader(obj.getString("leader"));
+		userIds[0] = leader;
+	}
+	
+	public void setColorStatus(String colorStatus) {
+		int weekdayCount = 0;
+		for (int i = 0; i < weekdayLine.length(); i++) {
+			char c = weekdayLine.charAt(i);
+			if (c == '1') weekdayCount++;
+		}
+		this.colorStatus = new int[(endTime - startTime + 1) * weekdayCount];
+		for (int i = 0; i < colorStatus.length(); i++) {
+			this.colorStatus[i] = colorStatus.charAt(i) - '0';
+		}
+	}
+	
 	public String[] getUserIds() {
 		return userIds;
 	}
 	public void setUserIds(String[] userIds) {
 		this.userIds = userIds;
 	}
+	
+	public String getLeader() {
+		return leader;
+	}
+	
+	public void setLeader(String leader) {
+		this.leader = leader;
+	}
+	
 	private String id;
 	private String weekdayLine;
+	private String leader;
 	private int startTime;
 	private int endTime;
 	private int numOfMembers;

@@ -1,19 +1,23 @@
-package com.puzhen.slot.controller;
+package com.puzhen.slot.main;
 
 import java.util.*;
-
+import javax.json.JsonObject;
 import org.apache.commons.text.RandomStringGenerator;
 import com.puzhen.slot.model.*;
 
 public class DialogContainer {
 
-	public String getNewDialog(String weekdayLine, int startTime, int endTime, int numOfMembers) {
+	public synchronized String createDialog(JsonObject obj) {
 		RandomStringGenerator generator = new RandomStringGenerator.Builder()
 			     .withinRange('a', 'z').build();
-		@SuppressWarnings("unused")
 		String dialogId = generator.generate(20);
-		
-		return "";
+		Dialog dialog = new Dialog(obj);
+		dialogs.put(dialogId, dialog);
+		return dialogId;
+	}
+	
+	public Dialog getDialog(String dialogId) {
+		return dialogs.get(dialogId);
 	}
 	
 	private DialogContainer() {
@@ -27,6 +31,5 @@ public class DialogContainer {
 	}
 	
 	private static DialogContainer instance;
-	@SuppressWarnings("unused")
 	private Map<String, Dialog> dialogs;
 }
