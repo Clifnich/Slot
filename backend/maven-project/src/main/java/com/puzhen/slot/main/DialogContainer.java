@@ -1,13 +1,14 @@
 package com.puzhen.slot.main;
 
 import java.util.*;
-import javax.json.JsonObject;
 import org.apache.commons.text.RandomStringGenerator;
+import org.json.simple.JSONObject;
+
 import com.puzhen.slot.model.*;
 
 public class DialogContainer {
 
-	public synchronized String createDialog(JsonObject obj) {
+	public synchronized String createDialog(JSONObject obj) {
 		RandomStringGenerator generator = new RandomStringGenerator.Builder()
 			     .withinRange('a', 'z').build();
 		String dialogId = generator.generate(20);

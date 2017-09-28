@@ -1,6 +1,6 @@
 package com.puzhen.slot.model;
 
-import javax.json.JsonObject;
+import org.json.simple.JSONObject;
 
 public class Dialog {
 
@@ -41,14 +41,14 @@ public class Dialog {
 		this.colorStatus = colorStatus;
 	}
 	
-	public Dialog(JsonObject obj) {
-		weekdayLine = obj.getString("weekdayLine");
-		startTime = obj.getInt("startTime");
-		endTime = obj.getInt("endTime");
-		numOfMembers = obj.getInt("numOfMembers");
+	public Dialog(JSONObject obj) {
+		weekdayLine = (String) obj.get("weekdayLine");
+		startTime = Integer.valueOf((String) obj.get("startTime"));
+		endTime = Integer.valueOf((String) obj.get("endTime"));
+		numOfMembers = Integer.valueOf((String) obj.get("numOfMembers"));
 		userIds = new String[numOfMembers];
-		setColorStatus(obj.getString("leaderDrawStatus"));
-		setLeader(obj.getString("leader"));
+		setColorStatus((String)obj.get("leaderDrawStatus"));
+		setLeader((String) obj.get("leader"));
 		userIds[0] = leader;
 	}
 	

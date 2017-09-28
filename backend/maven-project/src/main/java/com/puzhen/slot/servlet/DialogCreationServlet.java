@@ -1,16 +1,13 @@
 package com.puzhen.slot.servlet;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonValue;
 import javax.servlet.http.*;
-
 import org.apache.log4j.Logger;
-import org.json.simple.*;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import com.puzhen.slot.main.DialogContainer;
-import com.puzhen.slot.utility.Networks;
+
 import java.io.*;
 
 public class DialogCreationServlet extends HttpServlet{
@@ -34,12 +31,15 @@ public class DialogCreationServlet extends HttpServlet{
 			response.setStatus(500);
 			return;
 		}
-		JSONObject obj = null;
+		
 		try {
-			BufferedReader rd = new BufferedReader(new InputStreamReader(request.getInputStream()));
-			String requestJson = Networks.exhaustBr(rd);
-			logger.info("requestJson is: [" + requestJson + "].");
-			obj = (JSONObject) (new JSONParser()).parse(requestJson);
+			BufferedReader rd = request.getReader();
+			String line = "";
+			StringBuffer sb = new StringBuffer();
+			while ((line = rd.readLine()) != null) {
+				sb.append(line);
+			}
+			JSONObject obj = (JSONObject) (new JSONParser()).parse(sb.toString());
 			if (!obj.containsKey("weekdayLine")
 					|| !obj.containsKey("startTime")
 					|| !obj.containsKey("endTime")
@@ -50,20 +50,11 @@ public class DialogCreationServlet extends HttpServlet{
 				out.print("no enough parameters");
 				return;
 			}
-		} catch (Exception e) {
+			logger.info(obj.toString());
+			out.print(DialogContainer.getInstance().createDialog(obj));
+		} catch (IOException | ParseException e) {
 			e.printStackTrace();
-			response.setStatus(500);
-			out.print("exception");
-			return;
 		}
-		JsonObject obj2 = Json.createObjectBuilder()
-				.add("weekdayLine", (JsonValue) obj.get("weekdayLine"))
-				.add("startTime", (JsonValue) obj.get("startTime"))
-				.add("endTime", (JsonValue) obj.get("endTime"))
-				.add("numOfMembers", (JsonValue) obj.get("numOfMembers"))
-				.add("leaderDrawStatus", (JsonValue) obj.get("leaderDrawStatus"))
-				.add("leader", (JsonValue) obj.get("leader"))
-				.build();
-		out.print(DialogContainer.getInstance().createDialog(obj2));
+		
 	}
 }
