@@ -21,6 +21,12 @@ public class LeaderRequestModel {
 		
 	}
 	
+	@Override
+	public String toString() {
+		return "LeaderRequestModel [weekdayLine=" + weekdayLine + ", startTime=" + startTime + ", endTime=" + endTime
+				+ ", numOfMembers=" + numOfMembers + ", leaderDrawStatus=" + leaderDrawStatus + "]";
+	}
+
 	public String getWeekdayLine() {
 		return weekdayLine;
 	}

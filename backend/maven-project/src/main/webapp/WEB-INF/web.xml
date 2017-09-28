@@ -14,4 +14,16 @@
       <url-pattern>/</url-pattern>
    </servlet-mapping>
    
+   <servlet>
+   	<servlet-name>CreateDialog</servlet-name>
+   	<servlet-class>
+   		com.puzhen.slot.servlet.DialogCreationServlet
+   	</servlet-class>
+   </servlet>
+   
+   <servlet-mapping>
+   	<servlet-name>CreateDialog</servlet-name>
+   	<url-pattern>/createDialog</url-pattern>
+   </servlet-mapping>
+   
 </web-app>

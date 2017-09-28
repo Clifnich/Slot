@@ -28,12 +28,7 @@ public class CreateDialogPostTest extends TestCase {
 				.add("numOfMembers", 2)
 				.add("leaderDrawStatus", "010").build();
 		try {
-			HttpURLConnection conn = (HttpURLConnection) 
-					(new URL(urlHead + "/createDialog?leaderId=leader")).openConnection();
-			conn.setDoOutput(true);
-			conn.setRequestMethod("POST");
-			PrintWriter writer = new PrintWriter(conn.getOutputStream());
-			writer.write(obj.toString()); writer.flush();
+			HttpURLConnection conn = postToUrl(urlHead + "/createDialog?leaderId=leader", obj);
 			assertEquals(200, conn.getResponseCode());
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -52,12 +47,7 @@ public class CreateDialogPostTest extends TestCase {
 				.add("numOfMembers", 2)
 				.add("leaderDrawStatus", "010").build();
 		try {
-			HttpURLConnection conn = (HttpURLConnection) 
-					(new URL(urlHead + "/createDialog?leaderId=leader")).openConnection();
-			conn.setDoOutput(true);
-			conn.setRequestMethod("POST");
-			PrintWriter writer = new PrintWriter(conn.getOutputStream());
-			writer.write(obj.toString()); writer.flush();
+			HttpURLConnection conn = postToUrl(urlHead + "/createDialog?leaderId=leader", obj);
 			assertEquals(400, conn.getResponseCode());
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -73,12 +63,7 @@ public class CreateDialogPostTest extends TestCase {
 				.add("numOfMembers", 2)
 				.add("leaderDrawStatus", "010").build();
 		try {
-			HttpURLConnection conn = (HttpURLConnection) 
-					(new URL(urlHead + "/createDialog?leaderId=leader")).openConnection();
-			conn.setDoOutput(true);
-			conn.setRequestMethod("POST");
-			PrintWriter writer = new PrintWriter(conn.getOutputStream());
-			writer.write(obj.toString()); writer.flush();
+			HttpURLConnection conn = postToUrl(urlHead + "/createDialog?leaderId=leader", obj);
 			String dialogId = Networks.getResponseFromHttpConnection(conn);
 			assertTrue(dialogId.length() > 0);
 		} catch (IOException e) {
@@ -87,4 +72,14 @@ public class CreateDialogPostTest extends TestCase {
 		}
 	}
 
+	private HttpURLConnection postToUrl(String urlString, JsonObject obj) throws IOException{
+		HttpURLConnection conn = (HttpURLConnection) 
+				(new URL(urlString)).openConnection();
+		conn.setDoOutput(true);
+		conn.setRequestMethod("POST");
+		conn.setRequestProperty("Content-Type", "application/json; charset=utf8");
+		PrintWriter writer = new PrintWriter(conn.getOutputStream());
+		writer.write(obj.toString()); writer.flush();
+		return conn;
+	}
 }
