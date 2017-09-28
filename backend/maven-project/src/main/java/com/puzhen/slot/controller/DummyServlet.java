@@ -1,4 +1,4 @@
-package com.puzhen.Slot.controller;
+package com.puzhen.slot.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

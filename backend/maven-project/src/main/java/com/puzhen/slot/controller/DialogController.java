@@ -1,4 +1,4 @@
-package com.puzhen.Slot.controller;
+package com.puzhen.slot.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

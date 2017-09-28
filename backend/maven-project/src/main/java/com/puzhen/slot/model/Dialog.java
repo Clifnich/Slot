@@ -1,4 +1,4 @@
-package com.puzhen.Slot.model;
+package com.puzhen.slot.model;
 
 public class Dialog {
 

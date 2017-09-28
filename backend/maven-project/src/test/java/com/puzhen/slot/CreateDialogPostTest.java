@@ -1,4 +1,4 @@
-package com.puzhen.Slot;
+package com.puzhen.slot;
 
 import javax.json.*;
 import junit.framework.TestCase;
@@ -7,6 +7,8 @@ import java.net.*;
 
 public class CreateDialogPostTest extends TestCase {
 
+	private static final String urlHead = "http://localhost:8081/slot";
+	
 	public CreateDialogPostTest(String name) {
 		super(name);
 	}
@@ -24,7 +26,7 @@ public class CreateDialogPostTest extends TestCase {
 				.add("leaderDrawStatus", "010").build();
 		try {
 			HttpURLConnection conn = (HttpURLConnection) 
-					(new URL("http://localhost:8082/Slot/createDialog?userId=leader")).openConnection();
+					(new URL(urlHead + "/createDialog?userId=leader")).openConnection();
 			conn.setDoOutput(true);
 			PrintWriter writer = new PrintWriter(conn.getOutputStream());
 			writer.write(obj.toString()); writer.flush();
@@ -47,7 +49,7 @@ public class CreateDialogPostTest extends TestCase {
 				.add("leaderDrawStatus", "010").build();
 		try {
 			HttpURLConnection conn = (HttpURLConnection) 
-					(new URL("http://localhost:8082/Slot/createDialog?userId=leader")).openConnection();
+					(new URL(urlHead + "/createDialog?userId=leader")).openConnection();
 			conn.setDoOutput(true);
 			PrintWriter writer = new PrintWriter(conn.getOutputStream());
 			writer.write(obj.toString()); writer.flush();
@@ -67,7 +69,7 @@ public class CreateDialogPostTest extends TestCase {
 				.add("leaderDrawStatus", "010").build();
 		try {
 			HttpURLConnection conn = (HttpURLConnection) 
-					(new URL("http://localhost:8082/Slot/createDialog?userId=leader")).openConnection();
+					(new URL(urlHead + "/createDialog?userId=leader")).openConnection();
 			conn.setDoOutput(true);
 			PrintWriter writer = new PrintWriter(conn.getOutputStream());
 			writer.write(obj.toString()); writer.flush();

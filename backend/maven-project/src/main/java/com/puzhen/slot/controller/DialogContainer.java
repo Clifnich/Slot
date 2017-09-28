@@ -1,9 +1,9 @@
-package com.puzhen.Slot.controller;
+package com.puzhen.slot.controller;
 
 import java.util.*;
 
 import org.apache.commons.text.RandomStringGenerator;
-import com.puzhen.Slot.model.*;
+import com.puzhen.slot.model.*;
 
 public class DialogContainer {
 

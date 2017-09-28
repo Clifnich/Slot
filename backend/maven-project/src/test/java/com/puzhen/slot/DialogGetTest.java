@@ -1,4 +1,4 @@
-package com.puzhen.Slot;
+package com.puzhen.slot;
 
 import java.io.IOException;
 import java.io.PrintWriter;
