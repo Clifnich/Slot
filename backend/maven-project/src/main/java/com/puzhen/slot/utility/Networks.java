@@ -5,6 +5,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 //import java.nio.file.*;
 
+import javax.json.JsonObject;
 import javax.net.ssl.HttpsURLConnection;
 
 import org.apache.log4j.Logger;
@@ -100,7 +101,7 @@ public class Networks {
 			if (first) {
 				sb.append(line);
 			} else {
-				sb.append("\r\n");
+				sb.append("\n");
 				sb.append(line);
 			}
 		}
@@ -120,5 +121,23 @@ public class Networks {
 		conn.setRequestMethod(method);
 		conn.connect();
 		return Networks.exhaustBr(new BufferedReader(new InputStreamReader(conn.getInputStream())));
+	}
+	
+	/**
+	 * POST a json to URL
+	 * @param urlString
+	 * @param obj
+	 * @return
+	 * @throws IOException
+	 */
+	public static HttpURLConnection postToUrl(String urlString, JsonObject obj) throws IOException{
+		HttpURLConnection conn = (HttpURLConnection) 
+				(new URL(urlString)).openConnection();
+		conn.setDoOutput(true);
+		conn.setRequestMethod("POST");
+		conn.setRequestProperty("Content-Type", "application/json; charset=utf8");
+		PrintWriter writer = new PrintWriter(conn.getOutputStream());
+		writer.write(obj.toString()); writer.flush();
+		return conn;
 	}
 }

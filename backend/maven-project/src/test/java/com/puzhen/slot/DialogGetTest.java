@@ -1,13 +1,10 @@
 package com.puzhen.slot;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
 import javax.json.Json;
 import javax.json.JsonObject;
-
 import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -46,13 +43,10 @@ public class DialogGetTest extends TestCase {
 				.add("startTime", 8)
 				.add("endTime", 20)
 				.add("numOfMembers", 2)
-				.add("leaderDrawStatus", availability).build();
+				.add("leaderDrawStatus", availability)
+				.add("leader", "puzhen").build();
 		try {
-			HttpURLConnection conn = (HttpURLConnection) 
-					(new URL(urlHead + "/createDialog?userId=leader")).openConnection();
-			conn.setDoOutput(true);
-			PrintWriter writer = new PrintWriter(conn.getOutputStream());
-			writer.write(obj.toString()); writer.flush();
+			HttpURLConnection conn = Networks.postToUrl(urlHead + "/createDialog", obj);
 			dialogId = Networks.getResponseFromHttpConnection(conn);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -64,7 +58,7 @@ public class DialogGetTest extends TestCase {
 		StringBuffer getUrl = new StringBuffer();
 		getUrl.append(urlHead + "/dialog?id=");
 		getUrl.append(dialogId);
-		getUrl.append("&userId=leader");
+		getUrl.append("&userId=puzhen");
 		try {
 			HttpURLConnection conn = (HttpURLConnection) 
 					(new URL(getUrl.toString())).openConnection();

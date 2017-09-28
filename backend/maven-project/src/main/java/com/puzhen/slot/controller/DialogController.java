@@ -2,7 +2,6 @@ package com.puzhen.slot.controller;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class DialogController {
@@ -41,9 +40,9 @@ public class DialogController {
 //		return dialogId;
 //	}
 	
-	@RequestMapping(value = "/dialog", method = RequestMethod.GET, params = {"id", "userId"})
-	public void doGetDialog(@RequestParam (value = "id") String id,
-			@RequestParam (value = "userId") String userId) {
-		
-	}
+//	@RequestMapping(value = "/dialog", method = RequestMethod.GET, params = {"id", "userId"})
+//	public void doGetDialog(@RequestParam (value = "id") String id,
+//			@RequestParam (value = "userId") String userId) {
+//		
+//	}
 }
