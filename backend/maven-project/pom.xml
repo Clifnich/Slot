@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.puzhen</groupId>
-	<artifactId>Slot</artifactId>
+	<artifactId>slot</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
-	<name>Slot</name>
+	<name>slot</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>

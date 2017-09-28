@@ -1,4 +1,4 @@
-package com.puzhen.slot;
+package com.puzhen.slot.utility;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -95,9 +95,14 @@ public class Networks {
 	public static String exhaustBr(BufferedReader rd) throws IOException {
 		StringBuffer sb = new StringBuffer();
 		String line = "";
+		boolean first = true;
 		while ((line = rd.readLine()) != null) {
-			sb.append(line);
-			sb.append("\n");
+			if (first) {
+				sb.append(line);
+			} else {
+				sb.append("\r\n");
+				sb.append(line);
+			}
 		}
 		rd.close();
 		return sb.toString();

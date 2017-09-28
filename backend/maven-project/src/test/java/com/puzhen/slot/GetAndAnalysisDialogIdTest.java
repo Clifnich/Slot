@@ -10,6 +10,8 @@ import javax.json.JsonObject;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import com.puzhen.slot.utility.Networks;
+
 public class GetAndAnalysisDialogIdTest extends TestCase {
 
 	public GetAndAnalysisDialogIdTest(String name) {

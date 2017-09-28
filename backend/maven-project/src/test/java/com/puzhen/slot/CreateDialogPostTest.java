@@ -1,13 +1,16 @@
 package com.puzhen.slot;
 
 import javax.json.*;
+
+import com.puzhen.slot.utility.Networks;
+
 import junit.framework.TestCase;
 import java.io.*;
 import java.net.*;
 
 public class CreateDialogPostTest extends TestCase {
 
-	private static final String urlHead = "http://localhost:8081/slot";
+	private static final String urlHead = Contract.urlHead;
 	
 	public CreateDialogPostTest(String name) {
 		super(name);
@@ -26,8 +29,9 @@ public class CreateDialogPostTest extends TestCase {
 				.add("leaderDrawStatus", "010").build();
 		try {
 			HttpURLConnection conn = (HttpURLConnection) 
-					(new URL(urlHead + "/createDialog?userId=leader")).openConnection();
+					(new URL(urlHead + "/createDialog?leaderId=leader")).openConnection();
 			conn.setDoOutput(true);
+			conn.setRequestMethod("POST");
 			PrintWriter writer = new PrintWriter(conn.getOutputStream());
 			writer.write(obj.toString()); writer.flush();
 			assertEquals(200, conn.getResponseCode());
@@ -49,8 +53,9 @@ public class CreateDialogPostTest extends TestCase {
 				.add("leaderDrawStatus", "010").build();
 		try {
 			HttpURLConnection conn = (HttpURLConnection) 
-					(new URL(urlHead + "/createDialog?userId=leader")).openConnection();
+					(new URL(urlHead + "/createDialog?leaderId=leader")).openConnection();
 			conn.setDoOutput(true);
+			conn.setRequestMethod("POST");
 			PrintWriter writer = new PrintWriter(conn.getOutputStream());
 			writer.write(obj.toString()); writer.flush();
 			assertEquals(400, conn.getResponseCode());
@@ -69,8 +74,9 @@ public class CreateDialogPostTest extends TestCase {
 				.add("leaderDrawStatus", "010").build();
 		try {
 			HttpURLConnection conn = (HttpURLConnection) 
-					(new URL(urlHead + "/createDialog?userId=leader")).openConnection();
+					(new URL(urlHead + "/createDialog?leaderId=leader")).openConnection();
 			conn.setDoOutput(true);
+			conn.setRequestMethod("POST");
 			PrintWriter writer = new PrintWriter(conn.getOutputStream());
 			writer.write(obj.toString()); writer.flush();
 			String dialogId = Networks.getResponseFromHttpConnection(conn);

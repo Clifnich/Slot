@@ -8,8 +8,11 @@ import java.net.URL;
 import javax.json.Json;
 import javax.json.JsonObject;
 
+import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+
+import com.puzhen.slot.utility.Networks;
 
 import junit.framework.TestCase;
 
@@ -22,6 +25,10 @@ import junit.framework.TestCase;
  */
 public class DialogGetTest extends TestCase {
 
+	private static final String urlHead = Contract.urlHead;
+	
+	static final Logger logger = Logger.getLogger(DialogGetTest.class);
+	
 	public DialogGetTest(String name) {
 		super(name);
 	}
@@ -42,7 +49,7 @@ public class DialogGetTest extends TestCase {
 				.add("leaderDrawStatus", availability).build();
 		try {
 			HttpURLConnection conn = (HttpURLConnection) 
-					(new URL("http://localhost:8082/Slot/createDialog?userId=leader")).openConnection();
+					(new URL(urlHead + "/createDialog?userId=leader")).openConnection();
 			conn.setDoOutput(true);
 			PrintWriter writer = new PrintWriter(conn.getOutputStream());
 			writer.write(obj.toString()); writer.flush();
@@ -52,10 +59,10 @@ public class DialogGetTest extends TestCase {
 			fail();
 		}
 		if (dialogId == null) fail("fail to get dialogId");
-		
+		logger.info("dialogId got here is: " + dialogId);
 		// get the dialog status from server, assert that the drawStatus is your availability
 		StringBuffer getUrl = new StringBuffer();
-		getUrl.append("http://localhost:8082/Slot/dialog?id=");
+		getUrl.append(urlHead + "/dialog?id=");
 		getUrl.append(dialogId);
 		getUrl.append("&userId=leader");
 		try {

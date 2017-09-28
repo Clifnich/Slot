@@ -9,6 +9,8 @@ import javax.json.*;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import com.puzhen.slot.utility.Networks;
+
 /**
  * Backend needs to support a POST request like this:
  * POST /dialog?id=xxx&userId=xxx&drawstatus=xxxx

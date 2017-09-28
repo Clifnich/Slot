@@ -11,27 +11,20 @@ import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import com.puzhen.slot.utility.Networks;
+
 @Controller
 public class DialogController {
 
-	@RequestMapping(value = "/createDialog", method = RequestMethod.POST)
+	@RequestMapping(value = "/createDialog", method = RequestMethod.POST, params = {"leaderId"})
 	@ResponseBody
-	public String doPost(HttpServletRequest request, HttpServletResponse response) {
+	public String doPost(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam (value = "leaderId") String leaderId) {
 		JSONObject obj = null;
 		try {
 			BufferedReader rd = new BufferedReader(new InputStreamReader(request.getInputStream()));
-			StringBuffer sb = new StringBuffer();
-			String line = "";
-			boolean first = true;
-			while ((line = rd.readLine()) != null) {
-				if (first) {
-					sb.append(line);
-				} else {
-					sb.append("\r\n");
-					sb.append(line);
-				}
-			}
-			obj = (JSONObject) (new JSONParser()).parse(sb.toString());
+			String requestJson = Networks.exhaustBr(rd);
+			obj = (JSONObject) (new JSONParser()).parse(requestJson);
 			if (!obj.containsKey("weekdayLine")
 					|| !obj.containsKey("startTime")
 					|| !obj.containsKey("endTime")
@@ -45,16 +38,17 @@ public class DialogController {
 			response.setStatus(500);
 			return "exception";
 		}
-		
+		// TODO instead of randomly generate a string, put the dialog object
+		// into DialogContainer and let it return a dialogId.
 		RandomStringGenerator generator = new RandomStringGenerator.Builder()
 			     .withinRange('a', 'z').build();
 		String dialogId = generator.generate(20);
 		return dialogId;
 	}
 	
-//	@RequestMapping(value = "/createdialog", method = RequestMethod.POST)
-//	@ResponseBody
-//	public String createDialog() {
-//		return "";
-//	}
+	@RequestMapping(value = "/dialog", method = RequestMethod.GET, params = {"id", "userId"})
+	public void doGetDialog(@RequestParam (value = "id") String id,
+			@RequestParam (value = "userId") String userId) {
+		
+	}
 }
