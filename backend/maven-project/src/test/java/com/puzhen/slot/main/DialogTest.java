@@ -2,19 +2,17 @@ package com.puzhen.slot.main;
 
 import javax.json.Json;
 import javax.json.JsonObject;
-
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
 import com.puzhen.slot.model.Dialog;
+import com.puzhen.slot.model.User;
 
 import junit.framework.TestCase;
 
-public class DialogContainerTest extends TestCase {
+public class DialogTest extends TestCase {
 
-	
-	public DialogContainerTest(String name) {
+	public DialogTest(String name) {
 		super(name);
 	}
 	
@@ -28,22 +26,26 @@ public class DialogContainerTest extends TestCase {
 				.add("leader", "puzhen").build();
 		JSONObject obj = null;
 		try {
-			obj = (JSONObject) (new JSONParser()).parse(obj0.toString());
+			JSONParser parser = new JSONParser();
+			obj = (JSONObject) parser.parse(obj0.toString());
+			Dialog dialog = new Dialog(obj);
+			JSONObject objFromDialog = (JSONObject) parser.parse(dialog.stringify());
+//			System.out.println((String)objFromDialog.get("drawStatus"));
+//			System.out.println(dialog.stringify());
+			assertTrue(((String) objFromDialog.get("drawStatus")).startsWith("010"));
 		} catch (ParseException e) {
 			e.printStackTrace();
 			fail();
 		}
-		DialogContainer container = DialogContainer.getInstance();
-		String dialogId = container.createDialog(obj);
-		Dialog dialog = container.getDialog(dialogId);
-		assertEquals(8, dialog.getStartTime());
-		assertEquals(2, dialog.getNumOfMembers());
+//		Dialog dialog = new Dialog(obj);
+//		String drawStatus = (String) dialo
+//		assertTrue()
 	}
 	
 	/**
-	 * test draw status auto-fill
+	 * Test addUser(shortUserID) method
 	 */
-	public void test1() {
+	public void testAddUser() {
 		JsonObject obj0 = Json.createObjectBuilder()
 				.add("weekdayLine", "0101010")
 				.add("startTime", "8")
@@ -53,24 +55,23 @@ public class DialogContainerTest extends TestCase {
 				.add("leader", "puzhen").build();
 		JSONObject obj = null;
 		try {
-			obj = (JSONObject) (new JSONParser()).parse(obj0.toString());
+			JSONParser parser = new JSONParser();
+			obj = (JSONObject) parser.parse(obj0.toString());
+			Dialog dialog = new Dialog(obj);
+			dialog.addUser(new User("dialog0 member1", "010"));
+			String[] userIds = dialog.getUserIds();
+			assertEquals(2, userIds.length);
+			assertEquals("member1", userIds[1]);
 		} catch (ParseException e) {
 			e.printStackTrace();
 			fail();
 		}
-		DialogContainer container = DialogContainer.getInstance();
-		String dialogId = container.createDialog(obj);
-		Dialog dialog = container.getDialog(dialogId);
-		int[] drawStatus = dialog.getColorStatus();
-		assertEquals(39, drawStatus.length);
-		assertEquals(0, drawStatus[0]);
-		assertEquals(1, drawStatus[1]);
 	}
 	
 	/**
-	 * test that user array should have the leader 
+	 * Test that dialog.addUser() method correctly adds user's draw status
 	 */
-	public void test2() {
+	public void testAddUser1() {
 		JsonObject obj0 = Json.createObjectBuilder()
 				.add("weekdayLine", "0101010")
 				.add("startTime", "8")
@@ -80,16 +81,16 @@ public class DialogContainerTest extends TestCase {
 				.add("leader", "puzhen").build();
 		JSONObject obj = null;
 		try {
-			obj = (JSONObject) (new JSONParser()).parse(obj0.toString());
+			JSONParser parser = new JSONParser();
+			obj = (JSONObject) parser.parse(obj0.toString());
+			Dialog dialog = new Dialog(obj);
+			dialog.addUser(new User("dialog0 member1", "010"));
+			int[] colorStatus = dialog.getColorStatus();
+			assertEquals(2, colorStatus[1]);
+			assertEquals(0, colorStatus[0]);
 		} catch (ParseException e) {
 			e.printStackTrace();
 			fail();
 		}
-		DialogContainer container = DialogContainer.getInstance();
-		String dialogId = container.createDialog(obj);
-		Dialog dialog = container.getDialog(dialogId);
-		String[] users = dialog.getUserIds();
-		assertEquals(1, users.length);
-		assertEquals("puzhen", users[0]);
 	}
 }

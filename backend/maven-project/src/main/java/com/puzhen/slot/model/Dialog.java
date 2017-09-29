@@ -1,14 +1,19 @@
 package com.puzhen.slot.model;
 
+import java.util.*;
+
+import javax.json.Json;
+import javax.json.JsonObject;
+
 import org.json.simple.JSONObject;
 
 public class Dialog {
 
 	public String getId() {
-		return id;
+		return dialogId;
 	}
 	public void setId(String id) {
-		this.id = id;
+		this.dialogId = id;
 	}
 	public String getWeekdayLine() {
 		return weekdayLine;
@@ -37,19 +42,17 @@ public class Dialog {
 	public int[] getColorStatus() {
 		return colorStatus;
 	}
-	public void setColorStatus(int[] colorStatus) {
-		this.colorStatus = colorStatus;
-	}
+
 	
 	public Dialog(JSONObject obj) {
 		weekdayLine = (String) obj.get("weekdayLine");
 		startTime = Integer.valueOf((String) obj.get("startTime"));
 		endTime = Integer.valueOf((String) obj.get("endTime"));
 		numOfMembers = Integer.valueOf((String) obj.get("numOfMembers"));
-		userIds = new String[numOfMembers];
+		shortUserIds = new String[1];
 		setColorStatus((String)obj.get("leaderDrawStatus"));
 		setLeader((String) obj.get("leader"));
-		userIds[0] = leader;
+		shortUserIds[0] = leader;
 	}
 	
 	public void setColorStatus(String colorStatus) {
@@ -64,11 +67,25 @@ public class Dialog {
 		}
 	}
 	
+	public void addUser(User user) {
+		String shortUserId = user.getId().split(" ")[1];
+		List<String> userList = new ArrayList<String>();
+		for (String id : shortUserIds)
+			userList.add(id);
+		userList.add(shortUserId);
+		shortUserIds = userList.toArray(shortUserIds);
+		
+		// add user's draw status to the dialog's
+		int[] userDrawStatus = user.getDrawStatus();
+		for (int i = 0; i < userDrawStatus.length; i++)
+			colorStatus[i] += userDrawStatus[i];
+	}
+	
 	public String[] getUserIds() {
-		return userIds;
+		return shortUserIds;
 	}
 	public void setUserIds(String[] userIds) {
-		this.userIds = userIds;
+		this.shortUserIds = userIds;
 	}
 	
 	public String getLeader() {
@@ -79,12 +96,25 @@ public class Dialog {
 		this.leader = leader;
 	}
 	
-	private String id;
+	public String stringify() {
+		StringBuffer drawStatus = new StringBuffer();
+		for (int i = 0; i < colorStatus.length; i++)
+			drawStatus.append(colorStatus[i]);
+		JsonObject obj = Json.createObjectBuilder()
+				.add("weekdayLine", weekdayLine)
+				.add("startTime", String.valueOf(startTime))
+				.add("endTime", String.valueOf(endTime))
+				.add("numOfMembers", String.valueOf(numOfMembers))
+				.add("drawStatus", drawStatus.toString()).build();
+		return obj.toString();
+	}
+	
+	private String dialogId;
 	private String weekdayLine;
 	private String leader;
 	private int startTime;
 	private int endTime;
 	private int numOfMembers;
 	private int[] colorStatus;
-	private String[] userIds;
+	private String[] shortUserIds;
 }

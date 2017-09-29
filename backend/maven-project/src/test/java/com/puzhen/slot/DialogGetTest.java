@@ -40,9 +40,9 @@ public class DialogGetTest extends TestCase {
 		String dialogId = null;
 		JsonObject obj = Json.createObjectBuilder()
 				.add("weekdayLine", "0101010")
-				.add("startTime", 8)
-				.add("endTime", 20)
-				.add("numOfMembers", 2)
+				.add("startTime", "8")
+				.add("endTime", "20")
+				.add("numOfMembers", "2")
 				.add("leaderDrawStatus", availability)
 				.add("leader", "puzhen").build();
 		try {
@@ -56,7 +56,7 @@ public class DialogGetTest extends TestCase {
 		logger.info("dialogId got here is: " + dialogId);
 		// get the dialog status from server, assert that the drawStatus is your availability
 		StringBuffer getUrl = new StringBuffer();
-		getUrl.append(urlHead + "/dialog?id=");
+		getUrl.append(urlHead + "/dialog?dialogId=");
 		getUrl.append(dialogId);
 		getUrl.append("&userId=puzhen");
 		try {
@@ -65,6 +65,7 @@ public class DialogGetTest extends TestCase {
 			conn.setDoInput(true);
 			String jsonString = Networks.getResponseFromHttpConnection(conn);
 			JSONObject jsonObj = (JSONObject) (new JSONParser()).parse(jsonString);
+			System.out.println(jsonObj.toJSONString());
 			assertTrue(((String) jsonObj.get("drawStatus")).startsWith(availability));
 		} catch (Exception e) {
 			e.printStackTrace();
