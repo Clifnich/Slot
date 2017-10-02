@@ -69,7 +69,6 @@ public class DialogPostTest extends TestCase {
 					(new URL(postUrl.toString())).openConnection();
 			conn.setDoInput(true);
 			conn.setRequestMethod("POST");
-			// TODO set post, and write your request specifically
 			String response = Networks.getResponseFromHttpConnection(conn);
 			System.out.println("Response from /dialog post request is: " + response);
 		} catch (IOException e) {

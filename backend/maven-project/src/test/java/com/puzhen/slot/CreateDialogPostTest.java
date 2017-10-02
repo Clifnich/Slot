@@ -1,7 +1,6 @@
 package com.puzhen.slot;
 
 import javax.json.*;
-
 import com.puzhen.slot.utility.Networks;
 
 import junit.framework.TestCase;
