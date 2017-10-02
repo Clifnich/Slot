@@ -33,7 +33,7 @@ public class DialogPostTest extends TestCase {
 	 */
 	public void test0() {
 		// step 1. create a dialog with empty leaderDrawStatus
-		String urlString = "http://localhost:8081/slot/createDialog";
+		String urlString = Contract.urlHead + "/createDialog";
 		String dialogId = null;
 		try {
 			HttpURLConnection conn = (HttpURLConnection) 
@@ -59,7 +59,7 @@ public class DialogPostTest extends TestCase {
 		
 		// step 2. publish your availability as memeber1 (your userId)
 		StringBuffer postUrl = new StringBuffer();
-		postUrl.append("http://localhost:8081/slot/dialog?dialogId=");
+		postUrl.append(Contract.urlHead + "/dialog?dialogId=");
 		postUrl.append(dialogId);
 		String myAvailability = "011";
 		postUrl.append("&userId=member1&drawStatus=");
@@ -79,7 +79,7 @@ public class DialogPostTest extends TestCase {
 		
 		// step 3. refresh the page, assert that drawStatus is your availability
 		StringBuffer getUrl = new StringBuffer();
-		getUrl.append("http://localhost:8081/slot/dialog?dialogId=");
+		getUrl.append(Contract.urlHead + "/dialog?dialogId=");
 		getUrl.append(dialogId);
 		getUrl.append("&userId=member1");
 		try {

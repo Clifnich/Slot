@@ -25,4 +25,16 @@
    	<servlet-name>Dialog</servlet-name>
    	<url-pattern>/dialog</url-pattern>
    </servlet-mapping>
+
+   <servlet>
+      <servlet-name>Dummy</servlet-name>
+      <servlet-class>
+         com.puzhen.slot.servlet.DummyServlet
+      </servlet-class>
+   </servlet>
+
+   <servlet-mapping>
+      <servlet-name>Dummy</servlet-name>
+      <url-pattern>/dummy</url-pattern>
+   </servlet-mapping>
 </web-app>
