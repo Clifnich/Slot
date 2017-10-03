@@ -37,11 +37,13 @@ Page( {
       rectColor: 'green',
       hexadecimal: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'],
       startTime: 7,
-      endTime: 23
+      endTime: 23,
+      numOfInvitationToSend: 0,
+      dialogId: ''
   },
 
   onLoad: function(option) {
-    console.log('option is: ' + option.weekdayLine);
+    console.log('Welcome to leader-box page!')
     var windowWidth, windowHeight;
     wx.getSystemInfo({
       success: function (res) {
@@ -55,8 +57,6 @@ Page( {
       canvasWidth: windowWidth * 0.8,
       canvasHeight: (windowHeight * 0.8)
     });
-    console.log("Set windowWidth to be: " + this.data.windowWidth);
-    console.log("Set windowHeight to be: " + this.data.windowHeight);
     
     if (option.startTime && option.endTime && option.weekdayLine) {
       this.setData({
@@ -81,22 +81,22 @@ Page( {
         newWeekdayArray.push(this.data.constWeekdayArray[i]);
       }
     }
-    console.log('setting time array to [' + newTimeArray.join('') + '].');
     this.setData({
       timeArray: newTimeArray,
       numOfRectInRow: count,
       numOfRectInCol: option.endTime - option.startTime + 1,
       weekdayArray: newWeekdayArray,
       numOfMembers: option.numOfMembers,
-      rectColor: this.getRectColor(option.numOfMembers)
+      rectColor: this.getRectColor(option.numOfMembers),
+      numOfInvitationToSend: Number(option.numOfMembers) - 1
     });
+    //console.log('need to send ' + this.data.numOfInvitationToSend + ' more invitations');
   },
 
   // compute the rectangle color
   getRectColor: function(numOfMembers) {
     var result = 'green';
     var color = (512 / (Number(numOfMembers) + 1)).toFixed(0);
-    console.log('color is: [' + color + '].');
     if (color <= 255) {
       // var firstTwoChars = color.toString(16);
       // result = '#' + firstTwoChars + 'ff' + firstTwoChars;
@@ -106,13 +106,11 @@ Page( {
       //console.log('first: ' + firstBit + ', second: ' + secondBit);
       result = '#' + firstBit + secondBit + 'ff' + firstBit + secondBit;
     }
-    console.log('set color to: [' + result + '].');
     return result;
   },
 
   // when the elements are ready, draw rectangles on the canvas
   onReady: function(e) {
-    console.log('This is ready function!');
     var numOfRectInRow = this.data.numOfRectInRow, numOfRectInColumn = this.data.numOfRectInCol;
     var recWidth = this.data.canvasWidth / numOfRectInRow, 
       recHeight = this.data.canvasHeight / numOfRectInColumn;
@@ -242,14 +240,37 @@ Page( {
   },
 
   onShareAppMessage: function (res) {
-    var path = '/page/sharedBox/shared-box';
-    var url = [];
-    url.push(path);
-    url.push('&weekdayLine='); url.push(this.data.weekdayLine);
-    url.push('&startTime='); url.push(this.data.startTime);
-    url.push('&endTime='); url.push(this.data.endTime);
-    url.push('&numOfMembers='); url.push(this.data.numOfMembers);
+    var invitations = this.data.numOfInvitationToSend;
+    if (invitations === 0) {
+      console.log("You can't send any more invitations.");
+      return;
+    }
+    invitations--;
+    this.setData({
+      numOfInvitationToSend: invitations
+    })
+    var path = '/page/member-box/member-box';
+    console.log('redirecting, dialogId is: ' + getApp().globalData.dialogId);
+    var memberIndex = Number(this.data.numOfMembers) - Number(this.data.numOfInvitationToSend) - 1;
+    console.log("Member's index is: " + memberIndex);
+    return {
+      title: "Leader's Invitation",
+      path: path,
+      success: function (res) {
+        // 转发成功
+        console.log('re-directing to [' + path + '].');
+      },
+      fail: function (res) {
+        // 转发失败
+        console.log('re-direct fails');
+      },
+      dialogId: getApp().globalData.dialogId,
+      memberIndex: memberIndex
+    }
+  },
 
+  publishLeadersAvailability: function() {
+    console.log("Publishing leader's availability...");
     // create colorStatus variable
     var colorStatus = [];
     for (var i = 0; i < Number(this.data.numOfRectInRow) * Number(this.data.numOfRectInCol); i++) {
@@ -259,27 +280,25 @@ Page( {
         colorStatus.push('0');
       }
     }
-    url.push('&colorStatus='); url.push(colorStatus.join(''));
-    if (res.from === 'button') {
-      // 来自页面内转发按钮
-      console.log(res.target)
-    }
-    return {
-      title: "Leader's Invitation",
-      path: path,
+    // send a request to the server to create a dialog
+    wx.request({
+      url: "https://www.minorlib.com/slot/createDialog",
+      method: "POST",
+      header: {
+        'Content-Type': 'application/json'
+      },
+      data: {
+        weekdayLine: this.data.weekdayLine,
+        startTime: this.data.startTime,
+        endTime: this.data.endTime,
+        numOfMembers: this.data.numOfMembers,
+        leaderDrawStatus: colorStatus.join(''),
+        leader: "leader"
+      },
       success: function (res) {
-        // 转发成功
-        console.log('re-directing to [' + url.join('') + '].');
-      },
-      fail: function (res) {
-        // 转发失败
-        console.log('re-direct fails');
-      },
-      weekdayLine: this.data.weekdayLine,
-      startTime: this.data.startTime,
-      endTime: this.data.endTime,
-      numOfMembers: this.data.numOfMembers,
-      colorStatus: colorStatus.join('')
-    }
+        console.log('Your dialog id is: ' + res.data);
+        getApp().globalData.dialogId = res.data;
+      }
+    });
   }
 })

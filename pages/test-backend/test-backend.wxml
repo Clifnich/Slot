@@ -1,0 +1,2 @@
+<view>testing backend...</view>
+<button bindtap="click">Click me</button>

@@ -27,7 +27,7 @@ Page({
     console.log('input number: [' + e.detail.value + '].');
     this.setData({
       numOfMembers: Number(e.detail.value)
-    })
+    });
   },
 
   /**
@@ -88,7 +88,7 @@ Page({
 
   buttonAction: function() {
     var newUrl = [];
-    newUrl.push('../box/box?startTime=');
+    newUrl.push('../leader-box/leader-box?startTime=');
     newUrl.push(this.data.startTime);
     newUrl.push('&endTime=');
     newUrl.push(this.data.endTime);

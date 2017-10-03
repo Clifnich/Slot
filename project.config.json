@@ -1,0 +1,59 @@
+{
+	"description": "项目配置文件。",
+	"setting": {
+		"urlCheck": true,
+		"es6": true,
+		"postcss": true,
+		"minified": true
+	},
+	"compileType": "weapp",
+	"libVersion": "1.5.3",
+	"appid": "wx11b3af9019bccf82",
+	"projectname": "Slot",
+	"condition": {
+		"weapp": {
+			"current": 4,
+			"list": [
+				{
+					"id": 0,
+					"name": "Box-Test-Redirect",
+					"pathName": "pages/box/box",
+					"query": "startTime=9&endTime=20&weekdayLine=111000&numOfMembers=3"
+				},
+				{
+					"id": 1,
+					"name": "SharedBox-Test",
+					"pathName": "pages/sharedBox/shared-box",
+					"query": "weekdayLine=111000&startTime=9&endTime=20&numOfMembers=3&colorStatus=111000000000000000000000000000000000",
+					"scene": "1007"
+				},
+				{
+					"id": -1,
+					"name": "Backend",
+					"pathName": "pages/test-backend/test-backend",
+					"query": ""
+				},
+				{
+					"id": 3,
+					"name": "To-Be-Re-Directed",
+					"pathName": "pages/leader-box/leader-box",
+					"query": "startTime=7&endTime=17&weekdayLine=1100000&numOfMembers=2"
+				},
+				{
+					"id": 4,
+					"name": "Member-box",
+					"pathName": "pages/member-box/member-box",
+					"query": "dialogId=smgbzqsyepyqrhdrhsjc&userId=member1"
+				}
+			]
+		},
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		}
+	}
+}

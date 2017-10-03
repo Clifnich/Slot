@@ -1,9 +1,11 @@
 {
   "pages":[
     "pages/index/index",
-    "pages/box/box",
+    "pages/leader-box/leader-box",
     "pages/sharedBox/shared-box",
-    "pages/logs/logs"
+    "pages/logs/logs",
+    "pages/member-box/member-box",
+    "pages/test-backend/test-backend"
   ],
   "window":{
     "backgroundTextStyle":"light",

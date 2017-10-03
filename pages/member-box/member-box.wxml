@@ -46,3 +46,4 @@
       class="canvas"/>
   </view>
 </view>
+<button bindtap='buttonSubmit' class="myButton">发布</button>
