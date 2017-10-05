@@ -49,3 +49,11 @@
   display: flex;
   width: 150%;
 }
+
+.refreshButton, .publishButton {
+  width: 30%;
+}
+
+.publishButton {
+  margin-left: 50px;
+}

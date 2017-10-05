@@ -57,11 +57,12 @@ Page({
       canvasHeight: (windowHeight * 0.8)
     });
 
-    // TODO request from the server
+    // request from the server
     var thisObj = this;
     var url = [];
     url.push('https://www.minorlib.com/slot/dialog?dialogId=');
     url.push(option.dialogId);
+    getApp().globalData.dialogId = option.dialogId;
     url.push('&userId=member');
     url.push(option.memberIndex);
     wx.request({
@@ -94,7 +95,7 @@ Page({
   // when the elements are ready, draw rectangles on the canvas
   onReady: function (e) {
     // set timeArray
-    var newTimeArray = this.data.timeArray;
+    var newTimeArray = [];
     for (var i = Number(this.data.startTime); i <= Number(this.data.endTime); i++) {
       newTimeArray.push(i);
     }
@@ -113,9 +114,7 @@ Page({
     this.setData({
       timeArray: newTimeArray,
       numOfRectInRow: count,
-
       weekdayArray: newWeekdayArray,
-
     });
     // set the colorStatus attribute, mostly fill 0 to the empty places
     var numOfBlocks = this.data.numOfRectInCol * this.data.numOfRectInRow;
@@ -170,8 +169,9 @@ Page({
         context.setFillStyle('white');
         context.rect(recWidth * i, recHeight * j, recWidth, recHeight);
         context.stroke();
-        if (colorStatus.length > k && colorStatus[k] === 1) {
-          context.setFillStyle(this.getRectColor(i * this.data.numOfRectInCol + j));
+        if (colorStatus.length > k) {
+          //context.setFillStyle(this.getRectColor(i * this.data.numOfRectInCol + j));
+          context.setFillStyle(this.data.colorLevel[colorStatus[k]]);
           context.fillRect(recWidth * i, recHeight * j, recWidth, recHeight);
         }
         k++;
@@ -403,5 +403,10 @@ Page({
         console.log(res);
       }
     })
+  },
+
+  buttonRefresh: function() {
+    var option = {dialogId: this.data.dialogId, memberIndex: this.data.memberIndex};
+    this.onLoad(option);
   }
 })

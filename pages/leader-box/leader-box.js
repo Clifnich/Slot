@@ -39,7 +39,8 @@ Page( {
       startTime: 7,
       endTime: 23,
       numOfInvitationToSend: 0,
-      dialogId: ''
+      dialogId: '',
+      colorLevel: []
   },
 
   onLoad: function(option) {
@@ -58,6 +59,12 @@ Page( {
       canvasHeight: (windowHeight * 0.8)
     });
     
+    // // check if it has sesion
+    // if (option.hasSession) {
+    //   console.log('has session');
+    //   this.refreshLeaderBoxPageWithSession();
+    //   return;
+    // }
     if (option.startTime && option.endTime && option.weekdayLine) {
       this.setData({
         startTime: option.startTime,
@@ -87,27 +94,51 @@ Page( {
       numOfRectInCol: option.endTime - option.startTime + 1,
       weekdayArray: newWeekdayArray,
       numOfMembers: option.numOfMembers,
-      rectColor: this.getRectColor(option.numOfMembers),
       numOfInvitationToSend: Number(option.numOfMembers) - 1
     });
-    //console.log('need to send ' + this.data.numOfInvitationToSend + ' more invitations');
+
+    // compute the colorLevel
+    var newColorLevel = ['#ffffff'];
+    for (var i = 0; i < this.data.numOfMembers; i++) {
+      var colorNumber = 512 / (Number(this.data.numOfMembers) + 1) * (i + 1);
+      var result = '#00ff00';
+      if (colorNumber < 256) {
+        colorNumber = 256 - colorNumber;
+        var firstBit = this.data.hexadecimal[(colorNumber / 16).toFixed(0)];
+        var secondBit = this.data.hexadecimal[(colorNumber % 16).toFixed(0)];
+        result = '#' + firstBit + secondBit + 'ff' + firstBit + secondBit;
+      } else if (colorNumber > 256) {
+        colorNumber = 256 - (colorNumber - 256);
+        var firstBit = this.data.hexadecimal[(colorNumber / 16).toFixed(0)];
+        var secondBit = this.data.hexadecimal[(colorNumber % 16).toFixed(0)];
+        result = '#00' + firstBit + secondBit + '00';
+      }
+      newColorLevel.push(result);
+    }
+    console.log('set color level to: ' + newColorLevel.join(' '));
+    this.setData({
+      colorLevel: newColorLevel
+    });
+    this.setData({
+      rectColor: this.data.colorLevel[1]
+    })
   },
 
   // compute the rectangle color
-  getRectColor: function(numOfMembers) {
-    var result = 'green';
-    var color = (512 / (Number(numOfMembers) + 1)).toFixed(0);
-    if (color <= 255) {
-      // var firstTwoChars = color.toString(16);
-      // result = '#' + firstTwoChars + 'ff' + firstTwoChars;
-      color = 256 - color;
-      var firstBit = this.data.hexadecimal[(color / 16).toFixed(0)];
-      var secondBit = this.data.hexadecimal[(color % 16).toFixed(0)];
-      //console.log('first: ' + firstBit + ', second: ' + secondBit);
-      result = '#' + firstBit + secondBit + 'ff' + firstBit + secondBit;
-    }
-    return result;
-  },
+  // getRectColor: function(numOfMembers) {
+  //   var result = 'green';
+  //   var color = (512 / (Number(numOfMembers) + 1)).toFixed(0);
+  //   if (color <= 255) {
+  //     // var firstTwoChars = color.toString(16);
+  //     // result = '#' + firstTwoChars + 'ff' + firstTwoChars;
+  //     color = 256 - color;
+  //     var firstBit = this.data.hexadecimal[(color / 16).toFixed(0)];
+  //     var secondBit = this.data.hexadecimal[(color % 16).toFixed(0)];
+  //     //console.log('first: ' + firstBit + ', second: ' + secondBit);
+  //     result = '#' + firstBit + secondBit + 'ff' + firstBit + secondBit;
+  //   }
+  //   return result;
+  // },
 
   // when the elements are ready, draw rectangles on the canvas
   onReady: function(e) {
@@ -119,8 +150,6 @@ Page( {
       for (var j = 0; j < numOfRectInColumn; j++) {
         context.rect(recWidth * i, recHeight * j, recWidth, recHeight);
         context.stroke();
-        // context.setFillStyle('green');
-        // context.fillRect(recWidth * i, recHeight * j, recWidth, recHeight);
       }
     }
     context.draw();
@@ -128,11 +157,10 @@ Page( {
       recWidth: recWidth,
       recHeight: recHeight,
     });
+    this.refreshLeaderBoxPage();
   },
 
   dummyStart: function(e) {
-    // console.log('start' + e);
-    // this.dummyTap(e);
     var x = e.touches[0].x,
       y = e.touches[0].y;
     console.log('dummy start: ' + x + ', ' + y);
@@ -146,7 +174,6 @@ Page( {
     var arrayIndex = column * this.data.numOfRectInCol + row;
     var newCanvasBlocks = this.data.canvasBlocks;
     if (newCanvasBlocks[arrayIndex] === 0) {
-      //console.log(newCanvasBlocks[arrayIndex] + ' less than numOfMembers ' + this.data.numOfMembers);
       context.setFillStyle(this.data.rectColor);
       newCanvasBlocks[arrayIndex] = 1;
       this.setData({
@@ -224,11 +251,6 @@ Page( {
       recHeight * row, recWidth, recHeight);
     context.draw(true);
   },
-  // This function returns the column index of a given position x
-  // Please -1 to get the actual array index
-  // getColumnIndex: function (x) {
-  //   return (x / (this.data.windowWidth / 4) + 0.5).toFixed(0);
-  // },
 
   getCanvasColumnIndex: function (x) {
     //console.log('getCanvasColumnIndex gets a paramter ' + x)
@@ -297,8 +319,77 @@ Page( {
       },
       success: function (res) {
         console.log('Your dialog id is: ' + res.data);
-        getApp().globalData.dialogId = res.data;
+        var dialogId = res.data;
+        getApp().globalData.dialogId = dialogId;
+        wx.setStorage({
+          key: 'dialogId',
+          data: dialogId,
+        })
       }
     });
+  },
+
+  /**
+   * onclick function for the refresh button
+   */
+  refreshLeaderBoxPage: function() {
+    console.log('refreshing!');
+    var url = [];
+    url.push('https://www.minorlib.com/slot/dialog?dialogId=');
+    url.push(getApp().globalData.dialogId);
+    url.push('&userId=leader');
+    var thisObj = this;
+    wx.request({
+      url: url.join(''),
+      success: function (res) {
+        console.log(res);
+        thisObj.updatePage(res.data.drawStatus);
+      }
+    });
+  },
+
+  // refreshLeaderBoxPageWithSession: function() {
+  //   var url = [];
+  //   url.push('https://www.minorlib.com/slot/dialog?dialogId=');
+  //   var thisObj = this;
+  //   wx.getStorage({
+  //     key: 'dialogId',
+  //     success: function(res) {
+  //       url.push(res.data);
+  //       url.push('&userId=leader');
+  //       wx.request({
+  //         url: url.join(''),
+  //         success: function(res) {
+  //           thisObj.updatePage(res.data.drawStatus);
+  //         }
+  //       })
+  //     },
+  //   })
+  // },
+
+  /**
+   * re-draw the boxes based on the drawStatus from server
+   */
+  updatePage: function(drawStatus) {
+    console.log('updating page for [' + drawStatus + '].');
+    var numOfRectInRow = this.data.numOfRectInRow, numOfRectInColumn = this.data.numOfRectInCol;
+    var recWidth = this.data.recWidth,
+      recHeight = this.data.recHeight;
+    
+    var k = 0;
+    for (var i = 0; i < numOfRectInRow; i++) {
+      for (var j = 0; j < numOfRectInColumn; j++) {
+        if (k >= drawStatus.length) {
+          break;
+        }
+        var context = wx.createCanvasContext('1');
+        context.rect(recWidth * i, recHeight * j, recWidth, recHeight);
+        context.setFillStyle(this.data.colorLevel[Number(drawStatus[k])]);
+        context.fill();
+        context.stroke();
+        context.draw(true);
+        k++;
+      }
+    }
   }
 })

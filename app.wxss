@@ -12,5 +12,4 @@
 .myButton {
   width: 30%;
   margin-top: 5px;
-  margin-left: 44px;
 }

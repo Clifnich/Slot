@@ -49,3 +49,12 @@
   display: flex;
   width: 150%;
 }
+
+.bt {
+  margin-top: 5px;
+  width: 80px;
+}
+
+.myButton {
+  margin-left: 44px;
+}

@@ -16,4 +16,7 @@
       class="canvas"/>
   </view>
 </view>
-<button bindtap='publishLeadersAvailability' class="myButton">发布</button>
+<view style="display: flex;">
+  <button class="publishButton" bindtap='publishLeadersAvailability'>发布</button>
+  <button class="refreshButton" bindtap='refreshLeaderBoxPage'>刷新</button>
+</view>

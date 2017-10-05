@@ -1,1 +1,16 @@
 /* pages/test-backend/test-backend.wxss */
+.refreshButton, .publishButton {
+  width: 30%;
+}
+
+/* .publishButton {
+  width: 30%;
+} */
+
+.butonGroup {
+  display: flex;
+}
+
+/* .bt1, .bt2 {
+  width: 80px;
+} */

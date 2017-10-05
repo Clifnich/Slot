@@ -1,32 +1,4 @@
-<!--
-<view class="row">
-  <block wx:for="{{array1}}" wx:key="">
-    <view class="column {{item.changeColor ? 'selected' : 'normal'}}"
-      bindtouchmove="handletouch"
-      bindtouchstart="handletouchstart">
-      Column #{{item.id}}
-    </view>
-  </block>
-</view>
-<view class="row">
-  <block wx:for="{{array2}}" wx:key="">
-    <view class="column {{item.changeColor ? 'selected' : 'normal'}}"
-      bindtouchmove="handletouch"
-      bindtouchstart="handletouchstart">
-      Column #{{item.id}}
-    </view>
-  </block>
-</view>
-<view class="row">
-  <block wx:for="{{array3}}" wx:key="">
-    <view class="column {{item.changeColor ? 'selected' : 'normal'}}"
-      bindtouchmove="handletouch"
-      bindtouchstart="handletouchstart">
-      Column #{{item.id}}
-    </view>
-  </block>
-</view> -->
-<!-- TODO Try to make a canvas here and test the preventing scrolling technique. -->
+
 
 <view class="canvasBody">
   <view class="header">
@@ -46,4 +18,7 @@
       class="canvas"/>
   </view>
 </view>
-<button bindtap='buttonSubmit' class="myButton">发布</button>
+<view style="display: flex;">
+  <button bindtap='buttonSubmit' class="myButton">发布</button>
+  <button bindtap='buttonRefresh' class="bt">刷新</button>
+</view>

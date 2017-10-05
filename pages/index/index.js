@@ -34,7 +34,33 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-  
+    wx.getStorage({
+      key: 'dialogId',
+      success: function(res) {
+        var dialogId = res.data;
+        getApp().globalData.dialogId = dialogId;
+        wx.request({
+          url: 'https://www.minorlib.com/slot/dialog?dialogId=' + dialogId + '&userId=leader',
+          success: function(res) {
+            console.log(res);
+            var pageUrl = ['../leader-box/leader-box?startTime='];
+            pageUrl.push(res.data.startTime);
+            pageUrl.push('&endTime=');
+            pageUrl.push(res.data.endTime);
+            pageUrl.push('&weekdayLine=');
+            pageUrl.push(res.data.weekdayLine);
+            pageUrl.push('&numOfMembers=');
+            pageUrl.push(res.data.numOfMembers);
+            wx.navigateTo({
+              url: pageUrl.join(''),
+            })
+          }
+        })
+        // wx.navigateTo({
+        //   url: '../leader-box/leader-box?hasSession=true&dialogId=' + dialogId,
+        // })
+      },
+    })
   },
 
   /**

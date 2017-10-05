@@ -1,2 +1,15 @@
 <view>testing backend...</view>
 <button bindtap="click">Click me</button>
+
+<view class="buttonGroup" style="display: flex;">
+     <button class="bt1" type="default" bindtap='publishLeadersAvailability'>发布</button>
+    <button class="bt2" type="default" bindtap='refreshLeaderBoxPage'>刷新</button> 
+    <!-- <view class="bt1">1</view>
+    <view class="bt2">2</view> -->
+</view>
+
+<view class="flex-row" style="display: flex;">
+      <view class="flex-view-item">1</view>
+      <view class="flex-view-item">2</view>
+      <view class="flex-view-item">3</view>
+  </view>
