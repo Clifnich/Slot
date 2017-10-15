@@ -27,14 +27,26 @@
    </servlet-mapping>
 
 	<servlet>
-		<servlet-name>Claim</servlet-name>
+		<servlet-name>LoggerTest</servlet-name>
 		<servlet-class>
-			com.puzhen.slot.servelt.ClaimServlet
+			com.puzhen.slot.servlet.LoggerServlet
 		</servlet-class>
 	</servlet>
 
-	<sevlet-mapping>
+	<servlet-mapping>
+		<servlet-name>LoggerTest</servlet-name>
+		<url-pattern>/loggertest</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>Claim</servlet-name>
+		<servlet-class>
+			com.puzhen.slot.servlet.ClaimServlet
+		</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
 		<servlet-name>Claim</servlet-name>
 		<url-pattern>/claim</url-pattern>
-	</sevlet-mapping>
+	</servlet-mapping>
 </web-app>

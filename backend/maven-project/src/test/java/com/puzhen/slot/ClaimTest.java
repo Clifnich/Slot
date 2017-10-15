@@ -38,13 +38,13 @@ public class ClaimTest {
     @Test
     public void claimTest() {
         try {
-            assertEquals("OK", Networks.connect("GET",
+            assertEquals("OK", Networks.connect("POST",
                     Contract.urlHead + "/claim?dialogId=" + dialogId + "&claimId=123"));
-            assertEquals("DENY", Networks.connect("GET",
+            assertEquals("DENY", Networks.connect("POST",
                     Contract.urlHead + "/claim?dialogId=" + dialogId + "&claimId=123"));
         } catch (Exception e) {
-            fail();
             e.printStackTrace();
+            fail();
         }
     }
 }
