@@ -40,7 +40,13 @@ Page( {
       endTime: 23,
       numOfInvitationToSend: 0,
       dialogId: '',
-      colorLevel: []
+      colorLevel: [],
+      // a boolean variable to determind whether to show the post button
+      showPostButton: true,
+      // a boolean variable to determind whether to show the refresh button
+      showRefreshButton: false,
+      // a boolean value to determind whether to show the delete button
+      showDeleteButton: true
   },
 
   onLoad: function(option) {
@@ -331,6 +337,12 @@ Page( {
         })
       }
     });
+
+    // hide the post button and show the refresh button
+    this.setData({
+      showPostButton: false,
+      showRefreshButton: true
+    })
   },
 
   /**
@@ -395,5 +407,18 @@ Page( {
         k++;
       }
     }
+  },
+
+  deleteButton: function(e) {
+    console.log(e);
+    wx.removeStorage({
+      key: 'dialogId',
+      success: function(res) {
+        console.log('Successfully delete the dialogId, redirecting back to home page.');
+      },
+    });
+    wx.navigateTo({
+      url: '../../pages/index/index',
+    })
   }
 })

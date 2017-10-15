@@ -17,6 +17,13 @@
   </view>
 </view>
 <view style="display: flex;">
-  <button class="publishButton" bindtap='publishLeadersAvailability'>发布</button>
-  <button class="refreshButton" bindtap='refreshLeaderBoxPage'>刷新</button>
+  <block wx:if="{{showPostButton}}">
+    <button class="publishButton" bindtap='publishLeadersAvailability'>发布</button>
+  </block>
+  <block wx:if="{{showRefreshButton}}">
+    <button class="refreshButton" bindtap='refreshLeaderBoxPage'>刷新</button>
+  </block>
+  <block wx:if="{{showDeleteButton}}">
+    <button class="deleteButton" bindtap="deleteButton">删除</button>
+  </block>
 </view>

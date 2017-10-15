@@ -50,8 +50,8 @@
   width: 150%;
 }
 
-.refreshButton, .publishButton {
-  width: 30%;
+.refreshButton, .publishButton, deleteButton {
+  width: 70px;
 }
 
 .publishButton {

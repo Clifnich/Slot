@@ -2,14 +2,14 @@
 
 <container class="container">
   <view class="label">
-    How many team members do you have?
+    团队人数：
   </view>
   <view class="input">
     <input type="text" placeholder='{{numOfMembers}}' bindconfirm="inputMembers" />
   </view>
 
   <view class="label">
-    What weekdays do you want to include?
+    一星期里：
   </view>
   <checkbox-group class="input" bindchange="checkboxChange">
     <label wx:for="{{weekdays}}" wx:key="">
@@ -17,19 +17,19 @@
     </label>
   </checkbox-group>
   <view class="label">
-    Select the start and end time in a day
+    选择一天的开始与结束：
   </view>
   <view class="time-input">
     <view class="time-input-small">
       <picker mode="time" value="10:10" start="09:01" end="21:01" 
         bindchange="bindTimeChange1">
-        start
+        开始
       </picker>
     </view>
     <view class="time-input-small">
       <picker mode="time" value="10:10" start="09:01" end="21:01" 
         bindchange="bindTimeChange2">
-        end
+        结束
       </picker>
     </view>
   </view>
