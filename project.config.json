@@ -12,7 +12,7 @@
 	"projectname": "Slot",
 	"condition": {
 		"weapp": {
-			"current": -1,
+			"current": 4,
 			"list": [
 				{
 					"id": 0,
@@ -35,15 +35,15 @@
 				},
 				{
 					"id": 3,
-					"name": "To-Be-Re-Directed",
+					"name": "Leader-Box",
 					"pathName": "pages/leader-box/leader-box",
-					"query": "startTime=7&endTime=17&weekdayLine=1100000&numOfMembers=2"
+					"query": "startTime=7&endTime=17&weekdayLine=1100000&numOfMembers=5"
 				},
 				{
 					"id": 4,
 					"name": "Member-box",
 					"pathName": "pages/member-box/member-box",
-					"query": "dialogId=suvufeckcyxcyvvjpknj&userId=member1"
+					"query": "dialogId=wypjeptqcopbaguixkfc"
 				}
 			]
 		},

@@ -19,6 +19,8 @@
   </view>
 </view>
 <view style="display: flex;">
-  <button bindtap='buttonSubmit' class="myButton">发布</button>
+  <block wx:if="{{showSubmitButton}}">
+    <button bindtap='buttonSubmit' class="myButton">发布</button>
+  </block>
   <button bindtap='buttonRefresh' class="bt">刷新</button>
 </view>

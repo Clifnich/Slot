@@ -51,6 +51,7 @@ Page({
             pageUrl.push(res.data.weekdayLine);
             pageUrl.push('&numOfMembers=');
             pageUrl.push(res.data.numOfMembers);
+            pageUrl.push('&final=true');
             wx.navigateTo({
               url: pageUrl.join(''),
             })

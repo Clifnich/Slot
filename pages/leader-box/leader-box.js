@@ -50,7 +50,13 @@ Page( {
   },
 
   onLoad: function(option) {
-    console.log('Welcome to leader-box page!')
+    // check if it is a final version 
+    if (option.final) {
+      this.setData({ 
+        showPostButton: false,
+        showRefreshButton: true
+      });
+    }
     var windowWidth, windowHeight;
     wx.getSystemInfo({
       success: function (res) {
@@ -65,12 +71,6 @@ Page( {
       canvasHeight: (windowHeight * 0.8)
     });
     
-    // // check if it has sesion
-    // if (option.hasSession) {
-    //   console.log('has session');
-    //   this.refreshLeaderBoxPageWithSession();
-    //   return;
-    // }
     if (option.startTime && option.endTime && option.weekdayLine) {
       this.setData({
         startTime: option.startTime,
@@ -129,22 +129,6 @@ Page( {
       rectColor: this.data.colorLevel[1]
     })
   },
-
-  // compute the rectangle color
-  // getRectColor: function(numOfMembers) {
-  //   var result = 'green';
-  //   var color = (512 / (Number(numOfMembers) + 1)).toFixed(0);
-  //   if (color <= 255) {
-  //     // var firstTwoChars = color.toString(16);
-  //     // result = '#' + firstTwoChars + 'ff' + firstTwoChars;
-  //     color = 256 - color;
-  //     var firstBit = this.data.hexadecimal[(color / 16).toFixed(0)];
-  //     var secondBit = this.data.hexadecimal[(color % 16).toFixed(0)];
-  //     //console.log('first: ' + firstBit + ', second: ' + secondBit);
-  //     result = '#' + firstBit + secondBit + 'ff' + firstBit + secondBit;
-  //   }
-  //   return result;
-  // },
 
   // when the elements are ready, draw rectangles on the canvas
   onReady: function(e) {
@@ -267,27 +251,30 @@ Page( {
     return (Number(y) / (this.data.canvasHeight / this.data.numOfRectInCol) + 0.5).toFixed(0) - 1;
   },
 
+  /**
+   * When redirecting, send the same message to every resipient
+   */
   onShareAppMessage: function (res) {
-    var invitations = this.data.numOfInvitationToSend;
-    if (invitations === 0) {
-      console.log("You can't send any more invitations.");
+    // user is not allowed to share this page if he hasn't posted
+    if (this.data.showPostButton) {
+      wx.showModal({
+        title: '稍等',
+        content: '请先发布:-)'
+      });
       return;
     }
-    invitations--;
-    this.setData({
-      numOfInvitationToSend: invitations
-    })
     var path = ['pages/member-box/member-box?dialogId='];
     var dialogId = getApp().globalData.dialogId;
     console.log('redirecting, dialogId is: ' + dialogId);
     path.push(dialogId);
-    path.push('&userId=member');
-    var memberIndex = Number(this.data.numOfMembers) - Number(this.data.numOfInvitationToSend) - 1;
-    path.push(memberIndex);
-    console.log("Member's index is: " + memberIndex);
+    // path.push('&userId=member');
+    // var memberIndex = Number(this.data.numOfMembers) - Number(this.data.numOfInvitationToSend) - 1;
+    // path.push(memberIndex);
+    // console.log("Member's index is: " + memberIndex);
+    path = path.join('');
     return {
-      title: "Leader's Invitation",
-      path: path.join(''),
+      title: "请画出你的空闲时间",
+      path: path,
       success: function (res) {
         // 转发成功
         console.log('re-directing to [' + path + '].');
@@ -295,9 +282,7 @@ Page( {
       fail: function (res) {
         // 转发失败
         console.log('re-direct fails');
-      },
-      dialogId: getApp().globalData.dialogId,
-      memberIndex: memberIndex
+      }
     }
   },
 
@@ -334,7 +319,10 @@ Page( {
         wx.setStorage({
           key: 'dialogId',
           data: dialogId,
-        })
+        });
+        wx.showModal({
+          title: '发布成功！'
+        });
       }
     });
 
@@ -363,25 +351,6 @@ Page( {
       }
     });
   },
-
-  // refreshLeaderBoxPageWithSession: function() {
-  //   var url = [];
-  //   url.push('https://www.minorlib.com/slot/dialog?dialogId=');
-  //   var thisObj = this;
-  //   wx.getStorage({
-  //     key: 'dialogId',
-  //     success: function(res) {
-  //       url.push(res.data);
-  //       url.push('&userId=leader');
-  //       wx.request({
-  //         url: url.join(''),
-  //         success: function(res) {
-  //           thisObj.updatePage(res.data.drawStatus);
-  //         }
-  //       })
-  //     },
-  //   })
-  // },
 
   /**
    * re-draw the boxes based on the drawStatus from server

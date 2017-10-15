@@ -39,10 +39,68 @@ Page({
     hexadecimal: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'],
     colorLevel: ['#ffffff'],
     dialogId: '',
-    memberIndex: ''
+    memberIndex: '',
+    showSubmitButton: true
   },
 
   onLoad: function (option) {
+    // first check if this user has claimed or not
+    // then try to claim a participation, if get OK, go on
+    var thisObj = this;
+    wx.getStorage({
+      key: 'claimId',
+      success: function(res) {
+        thisObj.basicConfigure(option.dialogId);
+      },
+      fail: function() {
+        console.log('there is no storage of claimId');
+        thisObj.goClaiming(option.dialogId);
+      }
+    })
+   
+    
+  },
+
+  /**
+   * This function generates a random number and call the claim API
+   */
+  goClaiming: function(dialogId) {
+    var claimId = Math.round(Math.random() * 10000)
+    var url = ['https://www.minorlib.com/slot/claim?dialogId=',
+      dialogId, '&claimId=', claimId];
+    url = url.join('');
+    console.log('claim url is: ' + url);
+    var thisObj = this;
+    wx.request({
+      url: url,
+      method: 'POST',
+      success: function (res) {
+        if (res.data === 'OK') {
+          wx.setStorage({
+            key: 'claimId',
+            data: claimId,
+          })
+          thisObj.basicConfigure(dialogId);
+        } else {
+          console.log(res);
+          wx.showModal({
+            title: '人数已满',
+            content: '当前对话人数已满，将带回主页',
+            success: function () {
+              wx.navigateTo({
+                url: '../../pages/index/index'
+              });
+            }
+          });
+        }
+      }
+    })
+  },
+
+  /**
+   * This function configures the dialog based on the dialogId
+   */
+  basicConfigure: function(dialogId) {
     var windowWidth, windowHeight;
     wx.getSystemInfo({
       success: function (res) {
@@ -61,13 +119,14 @@ Page({
     var thisObj = this;
     var url = [];
     url.push('https://www.minorlib.com/slot/dialog?dialogId=');
-    url.push(option.dialogId);
-    getApp().globalData.dialogId = option.dialogId;
-    url.push('&userId=member');
-    url.push(option.memberIndex);
+    url.push(dialogId);
+    getApp().globalData.dialogId = dialogId;
+    // works fine when userId is missed
+    // url.push('&userId=member');
+    // url.push(option.memberIndex);
     wx.request({
       url: url.join(''),
-      success: function(res) {
+      success: function (res) {
         console.log(res);
         thisObj.setData({
           startTime: Number(res.data.startTime),
@@ -76,33 +135,25 @@ Page({
           numOfRectInCol: Number(res.data.endTime) - Number(res.data.startTime) + 1,
           numOfMembers: Number(res.data.numOfMembers),
           colorStatusFromServer: res.data.drawStatus,
-          dialogId: option.dialogId,
-          memberIndex: option.memberIndex
+          dialogId: dialogId,
         });
-        thisObj.onReady();
+        thisObj.configureBasedOnServerInformation();
       }
-    })
-    // if (option.startTime && option.endTime && option.weekdayLine) {
-    //   this.setData({
-    //     startTime: option.startTime,
-    //     endTime: option.endTime,
-    //     weekdayLine: option.weekdayLine
-    //   })
-    // }
-
+    });
   },
 
-  // when the elements are ready, draw rectangles on the canvas
-  onReady: function (e) {
+  /**
+   * This function configures a great deal of attributes.
+   * when the elements are ready, draw rectangles on the canvas
+   */
+  configureBasedOnServerInformation: function (e) {
     // set timeArray
     var newTimeArray = [];
     for (var i = Number(this.data.startTime); i <= Number(this.data.endTime); i++) {
       newTimeArray.push(i);
     }
-
-    // set weekdayArray
+    // set weekdayArray and numOfRectInRow
     var newWeekdayArray = [];
-    // set numOfRectInRow
     var count = 0, line = this.data.weekdayLine;
     for (var i = 0, len = line.length; i < len; i++) {
       if (line[i] === '1') {
@@ -110,7 +161,6 @@ Page({
         newWeekdayArray.push(this.data.constWeekdayArray[i]);
       }
     }
-    //console.log('setting time array to [' + newTimeArray.join('') + '].');
     this.setData({
       timeArray: newTimeArray,
       numOfRectInRow: count,
@@ -354,33 +404,20 @@ Page({
     return (Number(y) / (this.data.canvasHeight / this.data.numOfRectInCol) + 0.5).toFixed(0) - 1;
   },
 
+  /**
+   * A member of a dialog can't further share it.
+   */
   onShareAppMessage: function (res) {
-    if (res.from === 'button') {
-      // 来自页面内转发按钮
-      console.log(res.target)
-    }
-    return {
-      title: "Leader's Invitation",
-      path: '/page/sharedBox/shared-box',
-      success: function (res) {
-        // 转发成功
-        console.log('re-direct is successful');
-      },
-      fail: function (res) {
-        // 转发失败
-        console.log('re-direct fails');
-      },
-      weekdayLine: '1111100',
-      startTime: 8,
-      endTime: 20
-    }
+    wx.showModal({
+      title: '抱歉，您不能转发',
+      content: '转发权限只有leader才有哦'
+    })
   },
 
   /**
    * Button action: publish a user's availability
    */
   buttonSubmit: function() {
-    console.log('click!');
     var drawStatus = [];
     for (var i = 0; i < Number(this.data.numOfRectInRow) * Number(this.data.numOfRectInCol); i++) {
       if (this.data.canvasBlocks[i] === 1) {
@@ -396,11 +433,19 @@ Page({
     url.push(this.data.memberIndex);
     url.push('&drawStatus=');
     url.push(drawStatus.join(''));
+    var thisObj = this;
     wx.request({
       url: url.join(''),
       method: "POST",
       success: function(res) {
         console.log(res);
+        thisObj.setData({
+          showSubmitButton: false
+        });
+        wx.showModal({
+          title: '发布成功！',
+          content: '',
+        })
       }
     })
   },
