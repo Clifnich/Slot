@@ -1,14 +1,16 @@
 package com.puzhen.slot;
 
-import junit.framework.*;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
+@RunWith(Suite.class)
+@Suite.SuiteClasses( {
+		CreateDialogPostTest.class,
+		DialogGetTest.class,
+		DialogPostTest.class,
+		ClaimTest.class
+} )
 public class RunAllAPITests {
 
-	public static Test suite() {
-		TestSuite suite = new TestSuite("RunAllAPITests");
-		suite.addTestSuite(CreateDialogPostTest.class);
-		suite.addTestSuite(DialogGetTest.class);
-		suite.addTestSuite(DialogPostTest.class);
-		return suite;
-	}
+
 }
