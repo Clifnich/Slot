@@ -25,4 +25,16 @@
    	<servlet-name>Dialog</servlet-name>
    	<url-pattern>/dialog</url-pattern>
    </servlet-mapping>
+
+	<servlet>
+		<servlet-name>Claim</servlet-name>
+		<servlet-class>
+			com.puzhen.slot.servelt.ClaimServlet
+		</servlet-class>
+	</servlet>
+
+	<sevlet-mapping>
+		<servlet-name>Claim</servlet-name>
+		<url-pattern>/claim</url-pattern>
+	</sevlet-mapping>
 </web-app>
