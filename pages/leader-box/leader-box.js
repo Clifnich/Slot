@@ -271,13 +271,17 @@ Page( {
     this.setData({
       numOfInvitationToSend: invitations
     })
-    var path = '/page/member-box/member-box';
-    console.log('redirecting, dialogId is: ' + getApp().globalData.dialogId);
+    var path = ['pages/member-box/member-box?dialogId='];
+    var dialogId = getApp().globalData.dialogId;
+    console.log('redirecting, dialogId is: ' + dialogId);
+    path.push(dialogId);
+    path.push('&userId=member');
     var memberIndex = Number(this.data.numOfMembers) - Number(this.data.numOfInvitationToSend) - 1;
+    path.push(memberIndex);
     console.log("Member's index is: " + memberIndex);
     return {
       title: "Leader's Invitation",
-      path: path,
+      path: path.join(''),
       success: function (res) {
         // 转发成功
         console.log('re-directing to [' + path + '].');
