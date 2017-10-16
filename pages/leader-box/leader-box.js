@@ -386,6 +386,14 @@ Page( {
         console.log('Successfully delete the dialogId, redirecting back to home page.');
       },
     });
+    wx.removeStorage({
+      key: 'claimId',
+      success: function() {}
+    });
+    var newCanvasBlock = this.data.canvasBlocks;
+    for (var i = 0; i < newCanvasBlock.length; i++) {
+      newCanvasBlock[i] = 0;
+    }
     wx.navigateTo({
       url: '../../pages/index/index',
     })

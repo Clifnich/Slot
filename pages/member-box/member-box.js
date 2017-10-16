@@ -453,7 +453,6 @@ Page({
   buttonRefresh: function() {
     var option = {dialogId: this.data.dialogId, memberIndex: this.data.memberIndex};
     this.onLoad(option);
-    // TODO clear the local draw
     var newCanvasBlock = this.data.canvasBlocks;
     for (var i = 0; i < newCanvasBlock.length; i++) {
       newCanvasBlock[i] = 0;
