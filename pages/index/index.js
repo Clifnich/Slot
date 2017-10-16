@@ -57,9 +57,6 @@ Page({
             })
           }
         })
-        // wx.navigateTo({
-        //   url: '../leader-box/leader-box?hasSession=true&dialogId=' + dialogId,
-        // })
       },
     })
   },

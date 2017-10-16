@@ -394,6 +394,8 @@ Page( {
     for (var i = 0; i < newCanvasBlock.length; i++) {
       newCanvasBlock[i] = 0;
     }
+    // TODO delete a global variable dialogId
+    getApp().globalData.dialogId = '';
     wx.navigateTo({
       url: '../../pages/index/index',
     })
